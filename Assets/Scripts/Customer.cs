@@ -11,6 +11,7 @@ public class Customer : MonoBehaviour, IInteractable
     public Chair chairScript;
     public MenuList menuList;
     public DishData orderedDish;
+    public int orderIndex; // Chỉ số đơn hàng trong OrderManager
     public GameObject[] speechBubblePrefabs; // Các prefab khung chat
     public float orderTimeLimit = 30f; // Thời gian chờ nhận món
     public float speechBubbleOffsetY = 1.5f;
@@ -94,7 +95,7 @@ public class Customer : MonoBehaviour, IInteractable
                 Destroy(currentSpeechBubble);
             }
             hasOrdered = false;
-            OrderManager.Instance.AddOrder(orderedDish, orderTimeLimit, this);
+            orderIndex = OrderManager.Instance.AddOrder(orderedDish, orderTimeLimit, this);
             // TODO: Thêm logic để xử lý đơn hàng (như thêm vào danh sách nhiệm vụ người chơi)
         }
     }
@@ -172,11 +173,12 @@ public class Customer : MonoBehaviour, IInteractable
             {
                 Debug.Log(carriedFood.dish.dishId)  ;
             }
-            if (carriedFood != null && carriedFood.dish.dishId == orderedDish.dishId)
+            if (carriedFood != null && carriedFood.dish.dishId == orderedDish.dishId && hasOrdered == false)
             {
                 Debug.Log($"{gameObject.name} received correct dish (ID: {orderedDish.dishId})!");
                 Destroy(carriedFood.gameObject);
                 player.SetCarryingFood(false);
+                OrderManager.Instance.RemoveFinishOrder(orderIndex);
                 StartCoroutine(LeaveHappyRestaurant());
             }
             else

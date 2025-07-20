@@ -10,7 +10,6 @@ public class Chef : MonoBehaviour
     public List<Transform> tablePositions = new List<Transform>();
     public List<GameObject> dishList; // Prefab món ăn
     public GameObject dishPrefab; // Prefab món ăn sẽ được đặt lên bàn
-    public float waitTimeAtPoint = 3f;
     private UnityEngine.AI.NavMeshAgent agent;
     private Animator animator;
     private enum BossState { Idle, MovingToStorage, MovingToKitchen, CollectingFish, CollectingVegetable, MovingToPrivateRoom, MovingToTable }
@@ -100,12 +99,13 @@ public class Chef : MonoBehaviour
                 if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
                 {
                     collectFishTimer -= Time.deltaTime;
+                    Debug.Log(collectFishTimer);
                     if (collectFishTimer <= 0)
                     {
                         animator.SetTrigger("CollectIngredients");
                         currentState = BossState.CollectingVegetable;
                         agent.SetDestination(currentOrder.dishData.vegetableIngredient.transform.position);
-                        collectFishTimer = waitTimeAtPoint;
+                        collectFishTimer = 2f;
                         //Debug.Log($"Boss collecting fish: {currentOrder.dishData.fishIngredient.name}");
                     }
                 }
@@ -120,7 +120,7 @@ public class Chef : MonoBehaviour
                         animator.SetTrigger("CollectIngredients");
                         currentState = BossState.MovingToKitchen;
                         agent.SetDestination(kitchenPoint.position);
-                        collectVegetableTimer = waitTimeAtPoint;
+                        collectVegetableTimer = 2f;
                         
                         //Debug.Log($"Boss collecting vegetable: {currentOrder.dishData.vegetableIngredient.name}");
                     }
@@ -138,7 +138,7 @@ public class Chef : MonoBehaviour
                     if (cookingTimer <= 0)
                     {
                         currentState = BossState.Idle;
-                        cookingTimer = 5f;
+                        cookingTimer = 4.2f;
                         animator.SetBool("isCooking", false); // Dừng animation nấu ăn
                         interactionIcon.SetActive(false); // Ẩn biểu tượng tương tác
                         Pan.SetActive(false); // Ẩn chảo khi nấu ăn xong

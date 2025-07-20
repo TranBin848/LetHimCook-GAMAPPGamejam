@@ -38,7 +38,6 @@ public class PlayerMovement : MonoBehaviour
         movement = context.ReadValue<Vector2>();
         animator.SetFloat("InputX", movement.x); // Cập nhật giá trị di chuyển theo trục X
         animator.SetFloat("InputY", movement.y); // Cập nhật giá trị di chuyển theo trục Y
-        animator.SetBool("isBringFood", isCarryingFood); // Cập nhật animation khi cầm món
         if (carriedFood != null)
             carriedFood.UpdatePosition(movement);
     }

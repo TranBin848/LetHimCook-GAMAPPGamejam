@@ -117,7 +117,6 @@ public class Customer : MonoBehaviour, IInteractable
 
     public void OnPrepTimeout()
     {
-        Debug.Log(gameObject.name + " hết thời gian chuẩn bị, khách nổi giận và bỏ về!");
         StartCoroutine(LeaveAngryRestaurant());
         // TODO: Giảm danh tiếng quán
     }

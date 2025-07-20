@@ -685,7 +685,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c2229f8f5a354041ba7f34138b22919, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  orderCardPrefab: {fileID: 4195034243936058996, guid: 62c918ef62e51a2449e01e40980d153f, type: 3}
+  orderCardPrefab: {fileID: 7144124567618149781, guid: 62c918ef62e51a2449e01e40980d153f, type: 3}
   orderPanel: {fileID: 1429589264}
   activeOrders: []
 --- !u!1 &331004789
@@ -17935,7 +17935,7 @@ MonoBehaviour:
     m_Top: 45
     m_Bottom: 5
   m_ChildAlignment: 0
-  m_Spacing: 90
+  m_Spacing: 120
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0

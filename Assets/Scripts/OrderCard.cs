@@ -1,15 +1,24 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening; 
+
 public class OrderCard : MonoBehaviour
 {
     public Image dishImage;
+    public Slider slider;
     public Image fillBarImage;
-    private Vector3 initialScale;
-    private float prepTimeLimit; 
+    private float prepTimeLimit;
     private float prepTimer;
     private Customer customer;
     public DishData dishData { get; private set; }
+
+    private void Start()
+    {
+        slider.minValue = 0f;
+        slider.maxValue = 1f; // slider từ 0 đến 1
+        slider.value = 1f; // bắt đầu full 100%
+    }
+
     public void Setup(DishData dish, float timeLimit, Customer customer)
     {
         dishData = dish;
@@ -17,8 +26,6 @@ public class OrderCard : MonoBehaviour
         prepTimeLimit = timeLimit;
         prepTimer = timeLimit;
         this.customer = customer;
-        initialScale = fillBarImage.transform.localScale;
-        fillBarImage.transform.localScale = new Vector3(0, initialScale.y, initialScale.z);
     }
 
     private void Update()
@@ -26,12 +33,20 @@ public class OrderCard : MonoBehaviour
         if (prepTimer > 0)
         {
             prepTimer -= Time.deltaTime;
-            float fillRatio = 1 - (prepTimer / prepTimeLimit); // Tỷ lệ từ 0 đến 1
-            fillBarImage.transform.localScale = new Vector3(fillRatio * initialScale.x, initialScale.y, initialScale.z); // Scale thanh
-            if (prepTimer <= 3 && prepTimer > 0) // Rung khi gần hết
+            float fillRatio = prepTimer / prepTimeLimit;
+            slider.value = fillRatio;
+
+            // Chuyển màu từ xanh sang đỏ
+            Color startColor = Color.green;
+            Color endColor = Color.red;
+            fillBarImage.color = Color.Lerp(endColor, startColor, fillRatio);
+            // Nếu bạn dùng slider.fillRect.GetComponent<Image>(), thay fillBarImage bằng fill image của slider
+
+            if (prepTimer <= 3 && prepTimer > 0)
             {
-                fillBarImage.transform.localPosition += Random.insideUnitSphere * 0.02f;
+                // Hiệu ứng shake nếu cần
             }
+
             if (prepTimer <= 0)
             {
                 customer.OnPrepTimeout();

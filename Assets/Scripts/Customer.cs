@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.AI;
+using Unity.Jobs;
 public class Customer : MonoBehaviour, IInteractable
 {
     public string customerID { get; private set; }
@@ -13,7 +14,8 @@ public class Customer : MonoBehaviour, IInteractable
     public DishData orderedDish;
     public int orderIndex; // Chỉ số đơn hàng trong OrderManager
     public GameObject[] speechBubblePrefabs; // Các prefab khung chat
-    public float orderTimeLimit = 30f; // Thời gian chờ nhận món
+    public float orderTimeLimit; // Thời gian chờ gọi món
+    public float prepTimeLimit; // Thời gian chờ chuẩn bị món
     public float speechBubbleOffsetY = 1.5f;
     private GameObject currentSpeechBubble; // Khung chat hiện tại
     private float orderTimer;
@@ -91,7 +93,7 @@ public class Customer : MonoBehaviour, IInteractable
         if (hasOrdered && orderTimer > 0)
         {
             hasOrdered = false;
-            orderIndex = OrderManager.Instance.AddOrder(orderedDish, orderTimeLimit, this);
+            orderIndex = OrderManager.Instance.AddOrder(orderedDish, prepTimeLimit, this);
             // TODO: Thêm logic để xử lý đơn hàng (như thêm vào danh sách nhiệm vụ người chơi)
         }
     }
@@ -107,14 +109,17 @@ public class Customer : MonoBehaviour, IInteractable
             {
                 Destroy(currentSpeechBubble);
             }
-            StartCoroutine(LeaveAngryRestaurant());
+            GameManager.Instance.IncreaseAnger(GameManager.Instance.angerIncreaseRate); // Tăng giận dữ
+            GameManager.Instance.DecreaseReputation(GameManager.Instance.reputationDecreaseOnTimeout); // Giảm danh tiếng quán
+            StartCoroutine(LeaveAngryRestaurant(1));
             // TODO: Giảm danh tiếng quán (cần tích hợp với hệ thống danh tiếng)
         }
     }
 
     public void OnPrepTimeout()
     {
-        StartCoroutine(LeaveAngryRestaurant());
+        GameManager.Instance.DecreaseReputation(GameManager.Instance.reputationDecreaseOnOrderFailure); // Giảm danh tiếng quán
+        StartCoroutine(LeaveAngryRestaurant(1));
         // TODO: Giảm danh tiếng quán
     }
 
@@ -126,6 +131,7 @@ public class Customer : MonoBehaviour, IInteractable
         }
         interactionIcon.SetActive(true); // Hiển thị biểu tượng tương tác khi khách rời đi
         interactionAnimator.SetBool("isHappy", true);
+        GameManager.Instance.IncreaseReputation(GameManager.Instance.reputationIncrease); // Tăng danh tiếng quán
         chairScript.isOccupied = false; // Giải phóng ghế
         animator.SetBool("isSitting", false);
         animator.SetBool("isMoving", true);
@@ -133,13 +139,25 @@ public class Customer : MonoBehaviour, IInteractable
         yield return new WaitUntil(() => !agent.pathPending && agent.remainingDistance <= agent.stoppingDistance);
         Destroy(gameObject); // Xóa khách
     }
-    IEnumerator LeaveAngryRestaurant()
+    IEnumerator LeaveAngryRestaurant(int index)
     {
         if (currentSpeechBubble != null)
         {
             Destroy(currentSpeechBubble);
         }
         interactionIcon.SetActive(true); // Hiển thị biểu tượng tương tác khi khách rời đi
+        switch (index)
+        {
+            case 1:
+                break;
+            case 2:
+                interactionAnimator.SetBool("isAngrySalted", true);
+                break;
+            case 3:
+                interactionAnimator.SetBool("isAngryMouse", true);
+                break;
+        }
+
         chairScript.isOccupied = false; // Giải phóng ghế
         animator.SetBool("isSitting", false);
         animator.SetBool("isMoving", true);
@@ -175,21 +193,51 @@ public class Customer : MonoBehaviour, IInteractable
             Food carriedFood = player?.GetCarriedFood();
             if (carriedFood != null)
             {
-                Debug.Log(carriedFood.dish.dishId)  ;
+                Debug.Log(carriedFood.dish.dishId);
             }
+
             if (carriedFood != null && carriedFood.dish.dishId == orderedDish.dishId && hasOrdered == false)
             {
-                Debug.Log($"{gameObject.name} received correct dish (ID: {orderedDish.dishId})!");
-                Destroy(carriedFood.gameObject);
+                // Ẩn carriedFood (giả lập khách đang ăn)
+                carriedFood.gameObject.SetActive(false);
                 player.SetCarryingFood(false);
-                OrderManager.Instance.RemoveFinishOrder(orderIndex);
-                StartCoroutine(LeaveHappyRestaurant());
+                // Bắt đầu coroutine kiểm tra sau 2s
+                StartCoroutine(CheckFoodAfterEating(carriedFood, player));
             }
             else
             {
                 Debug.Log($"{gameObject.name}: No dish or wrong dish delivered");
                 InteractWithOrder();
             }
+        }
+    }
+
+    private IEnumerator CheckFoodAfterEating(Food carriedFood, PlayerMovement player)
+    {
+        yield return new WaitForSeconds(2f);
+
+        // Kiểm tra muối hoặc chuột
+        if(carriedFood.isMouseAdded || carriedFood.isSalted)
+        {
+            if (carriedFood.isSalted)
+            {
+                GameManager.Instance.DecreaseReputation(GameManager.Instance.reputationDecreaseOnSalted); // Giảm danh tiếng quán
+                StartCoroutine(LeaveAngryRestaurant(2));
+            }
+            else if (carriedFood.isMouseAdded)
+            {
+                GameManager.Instance.DecreaseReputation(GameManager.Instance.reputationDecreaseOnMouse); // Giảm danh tiếng quán
+                StartCoroutine(LeaveAngryRestaurant(3));
+            }
+            Destroy(carriedFood.gameObject);
+            OrderManager.Instance.RemoveFinishOrder(orderIndex);
+            
+        }
+        else
+        {
+            Destroy(carriedFood.gameObject);
+            OrderManager.Instance.RemoveFinishOrder(orderIndex);
+            StartCoroutine(LeaveHappyRestaurant());
         }
     }
 }

@@ -8,7 +8,11 @@ public class GameManager : MonoBehaviour
     public float maxAnger = 100f;
     public float maxReputation = 100f;
     public float angerIncreaseRate = 5f;
-    public float reputationDecreaseOnTimeout = 10f;
+    public float reputationDecreaseOnTimeout = 5f;
+    public float reputationDecreaseOnOrderFailure = 7f;
+    public float reputationDecreaseOnSalted = 10f;
+    public float reputationDecreaseOnMouse = 15f;
+    public float reputationIncrease = 5f;
     void Awake()
     {
         if (Instance == null)
@@ -45,6 +49,16 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void IncreaseReputation(float amount)
+    {
+        reputation = Mathf.Clamp(reputation + amount, 0f, maxReputation);
+        Debug.Log($"Reputation: {reputation}/{maxReputation}");
+        if (reputation <= 0)
+        {
+            Debug.Log("Restaurant reputation is zero! Game Over!");
+            // TODO: Thêm logic game over
+        }
+    }
     public float GetAnger() => anger;
     public float GetReputation() => reputation;
 }

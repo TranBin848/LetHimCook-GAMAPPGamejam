@@ -116,7 +116,8 @@ MonoBehaviour:
   - {fileID: 7110479362986831687, guid: f390f197716f0434f8dac16bd43603d9, type: 3}
   - {fileID: 3055687200895463445, guid: 0ca80873531d2de48a136d2e8451d5c6, type: 3}
   - {fileID: 2184028719844501302, guid: 6f7999d48fb60c940804728a36d19fb4, type: 3}
-  orderTimeLimit: 60
+  orderTimeLimit: 35
+  prepTimeLimit: 50
   speechBubbleOffsetY: 1.5
   dishSprites:
   - {fileID: -346500140, guid: 11a7597b670a3c545a354168d4519458, type: 3}

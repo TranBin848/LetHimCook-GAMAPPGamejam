@@ -30,12 +30,9 @@ public class UIManager : MonoBehaviour
         reputationBarInitialPos = reputationSlider.transform.localPosition;
         // Thiết lập Slider
         angerSlider.minValue = 0f;
-        Debug.Log("Max Anger: " + GameManager.Instance.maxAnger);
-        Debug.Log("Max Reputation: " + GameManager.Instance.maxReputation);
         angerSlider.maxValue = GameManager.Instance.maxAnger;
         reputationSlider.minValue = 0f;
         reputationSlider.maxValue = GameManager.Instance.maxReputation;
-        Debug.Log(angerSlider.value + ", " + reputationSlider.value);
     }
 
     void Update()
@@ -49,6 +46,7 @@ public class UIManager : MonoBehaviour
 
         // Cập nhật Reputation
         float reputation = GameManager.Instance.GetReputation();
+        Debug.Log($"Reputation: {reputation}/{GameManager.Instance.maxReputation}");
         reputationSlider.value = reputation;
         reputationFill.fillAmount = reputation / GameManager.Instance.maxReputation;
         //reputationText.text = $"Reputation: {Mathf.RoundToInt(reputation)}/100";

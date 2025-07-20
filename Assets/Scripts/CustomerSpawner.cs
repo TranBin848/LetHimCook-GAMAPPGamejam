@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class CustomerSpawner : MonoBehaviour
 {
-    public GameObject customerPrefab;
+    public List<GameObject> customerPrefabs;
     public Transform spawnPoint;
     public MenuList menuList;
 
@@ -21,7 +21,17 @@ public class CustomerSpawner : MonoBehaviour
         Chair targetChair = FindEmptyChair();
         if (targetChair != null)
         {
-            GameObject customer = Instantiate(customerPrefab, spawnPoint.position, Quaternion.identity);
+            if (customerPrefabs.Count == 0)
+            {
+                Debug.LogWarning("Không có prefab nào trong customerPrefabs!");
+                return;
+            }
+
+            // Random prefab
+            int index = Random.Range(0, customerPrefabs.Count);
+            GameObject prefab = customerPrefabs[index];
+
+            GameObject customer = Instantiate(prefab, spawnPoint.position, Quaternion.identity);
             Customer customerScript = customer.GetComponent<Customer>();
 
             customerScript.menuList = menuList;

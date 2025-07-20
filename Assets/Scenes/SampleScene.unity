@@ -30945,7 +30945,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c21adb6bcae3bf4f968e52abd2c4fda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customerPrefab: {fileID: 763377632318907281, guid: 04034999901590146a23ff56f80fa73c, type: 3}
+  customerPrefabs:
+  - {fileID: 763377632318907281, guid: 04034999901590146a23ff56f80fa73c, type: 3}
+  - {fileID: 5915084067597594962, guid: afd27bb084ad18a45aee981d43e58fe7, type: 3}
   spawnPoint: {fileID: 1877534548}
   menuList: {fileID: 11400000, guid: 5e31908fe84079a4eaffb5c2eef11b3c, type: 2}
   chairs:

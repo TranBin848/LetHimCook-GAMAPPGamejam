@@ -16,6 +16,8 @@ public class InteractionDetector : MonoBehaviour
     public float mouseHoldTimeRequired = 3f;
     private bool isHoldingMouse = false;
 
+    private bool isInKitchen = false; // ✅ biến kiểm tra có trong kitchen không
+
     void Start()
     {
         interactionIcon.SetActive(false); // Ẩn biểu tượng tương tác ban đầu
@@ -23,7 +25,7 @@ public class InteractionDetector : MonoBehaviour
 
     void Update()
     {
-        if (isHoldingSalt)
+        if (isHoldingSalt && isInKitchen) // ✅ chỉ thực hiện nếu đang trong kitchen
         {
             saltHoldTimer += Time.deltaTime;
             Debug.Log($"Holding salt... {saltHoldTimer}");
@@ -35,7 +37,7 @@ public class InteractionDetector : MonoBehaviour
             }
         }
 
-        if (isHoldingMouse)
+        if (isHoldingMouse && isInKitchen) // ✅ chỉ thực hiện nếu đang trong kitchen
         {
             mouseHoldTimer += Time.deltaTime;
             Debug.Log($"Holding mouse... {mouseHoldTimer}");
@@ -60,10 +62,17 @@ public class InteractionDetector : MonoBehaviour
     {
         if (context.started)
         {
-            isHoldingSalt = true;
-            interactionIcon.SetActive(true);
-            interactionAnimator.SetBool("isAddingSalt", true);
-            saltHoldTimer = 0f;
+            if (isInKitchen) // ✅ chỉ bắt đầu khi trong kitchen
+            {
+                isHoldingSalt = true;
+                interactionIcon.SetActive(true);
+                interactionAnimator.SetBool("isAddingSalt", true);
+                saltHoldTimer = 0f;
+            }
+            else
+            {
+                Debug.Log("Not in kitchen, cannot add salt!");
+            }
         }
         if (context.canceled)
         {
@@ -78,10 +87,17 @@ public class InteractionDetector : MonoBehaviour
     {
         if (context.started)
         {
-            isHoldingMouse = true;
-            interactionIcon.SetActive(true);
-            interactionAnimator.SetBool("isAddingMouse", true);
-            mouseHoldTimer = 0f;
+            if (isInKitchen) // ✅ chỉ bắt đầu khi trong kitchen
+            {
+                isHoldingMouse = true;
+                interactionIcon.SetActive(true);
+                interactionAnimator.SetBool("isAddingMouse", true);
+                mouseHoldTimer = 0f;
+            }
+            else
+            {
+                Debug.Log("Not in kitchen, cannot add mouse!");
+            }
         }
         if (context.canceled)
         {
@@ -102,7 +118,7 @@ public class InteractionDetector : MonoBehaviour
             if (food != null)
             {
                 Debug.Log("Food found, adding salt");
-                if(!food.isSalted && !food.isMouseAdded)
+                if (!food.isSalted && !food.isMouseAdded)
                     food.AddSalt();
             }
             else
@@ -134,9 +150,17 @@ public class InteractionDetector : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.Log($"OnTriggerEnter2D with {collision.gameObject.name}");
         if (collision.TryGetComponent(out IInteractable interactable) && interactable.canInteract())
         {
             interactableInRange = interactable;
+        }
+
+        // ✅ kiểm tra nếu vào vùng kitchen
+        if (collision.CompareTag("Kitchen"))
+        {
+            isInKitchen = true;
+            Debug.Log("Entered kitchen area");
         }
     }
 
@@ -146,6 +170,13 @@ public class InteractionDetector : MonoBehaviour
         {
             interactableInRange = null;
             interactionIcon.SetActive(false);
+        }
+
+        // ✅ kiểm tra nếu rời khỏi vùng kitchen
+        if (collision.CompareTag("Kitchen"))
+        {
+            isInKitchen = false;
+            Debug.Log("Exited kitchen area");
         }
     }
 }

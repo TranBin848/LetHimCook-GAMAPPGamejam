@@ -90,10 +90,6 @@ public class Customer : MonoBehaviour, IInteractable
         Debug.Log("Check");
         if (hasOrdered && orderTimer > 0)
         {
-            if (currentSpeechBubble != null)
-            {
-                Destroy(currentSpeechBubble);
-            }
             hasOrdered = false;
             orderIndex = OrderManager.Instance.AddOrder(orderedDish, orderTimeLimit, this);
             // TODO: Thêm logic để xử lý đơn hàng (như thêm vào danh sách nhiệm vụ người chơi)
@@ -123,6 +119,10 @@ public class Customer : MonoBehaviour, IInteractable
 
     IEnumerator LeaveHappyRestaurant()
     {
+        if (currentSpeechBubble != null)
+        {
+            Destroy(currentSpeechBubble);
+        }
         interactionIcon.SetActive(true); // Hiển thị biểu tượng tương tác khi khách rời đi
         interactionAnimator.SetBool("isHappy", true);
         chairScript.isOccupied = false; // Giải phóng ghế
@@ -134,6 +134,10 @@ public class Customer : MonoBehaviour, IInteractable
     }
     IEnumerator LeaveAngryRestaurant()
     {
+        if (currentSpeechBubble != null)
+        {
+            Destroy(currentSpeechBubble);
+        }
         interactionIcon.SetActive(true); // Hiển thị biểu tượng tương tác khi khách rời đi
         chairScript.isOccupied = false; // Giải phóng ghế
         animator.SetBool("isSitting", false);

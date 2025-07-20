@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
-using UnityEngine.XR;
 
 public class Food : MonoBehaviour, IInteractable
 {
     private bool canBeInteracted = true;
     public DishData dish;
     public GameObject food;
+
+    public bool isSalted = false; // Món ăn có bị nêm muối không
+    public bool isMouseAdded = false; // Món ăn có bị thêm chuột không 
+
     public void Interact()
     {
         if (canBeInteracted)
@@ -22,6 +25,19 @@ public class Food : MonoBehaviour, IInteractable
         }
     }
 
+    public void AddSalt()
+    {
+        isSalted = true;
+        Debug.Log($"{gameObject.name} đã bị nêm muối!");
+    }
+
+    public void AddMouse()
+    {
+        // Flag hoặc logic khi thêm chuột
+        isMouseAdded = true;
+        Debug.Log($"{gameObject.name} đã bị thả chuột!");
+    }
+
     public bool canInteract()
     {
         return canBeInteracted;
@@ -29,27 +45,18 @@ public class Food : MonoBehaviour, IInteractable
 
     public void UpdatePosition(Vector2 direction)
     {
-        // Cập nhật vị trí món ăn dựa trên hướng di chuyển
         if (!canBeInteracted && transform.parent != null)
         {
             Vector2 newPos = new Vector2(0, -0.5f);
             if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
             {
-                // Ưu tiên hướng ngang (trái/phải)
-                newPos = direction.x > 0 ? new Vector2(0.6f, -0.4f) : new Vector2(-0.55f, -0.4f); // Phải/Trái
+                newPos = direction.x > 0 ? new Vector2(0.6f, -0.4f) : new Vector2(-0.55f, -0.4f);
             }
             else if (Mathf.Abs(direction.y) > 0)
             {
-                // Ưu tiên hướng dọc (trên/dưới)
-                newPos = direction.y > 0 ? new Vector2(0, 0.6f) : new Vector2(0, -0.5f); // Trên/Dưới
+                newPos = direction.y > 0 ? new Vector2(0, 0.6f) : new Vector2(0, -0.5f);
             }
             transform.localPosition = new Vector3(newPos.x, newPos.y, 0);
-            Debug.Log($"{gameObject.name} updated localPosition to {transform.localPosition}");
         }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        
     }
 }

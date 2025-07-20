@@ -6,33 +6,146 @@ public class InteractionDetector : MonoBehaviour
 {
     private IInteractable interactableInRange = null;
     public GameObject interactionIcon; // Biểu tượng tương tác
+    public Animator interactionAnimator;
+
+    private float saltHoldTimer = 0f;
+    public float saltHoldTimeRequired = 3f;
+    private bool isHoldingSalt = false;
+
+    private float mouseHoldTimer = 0f;
+    public float mouseHoldTimeRequired = 3f;
+    private bool isHoldingMouse = false;
+
     void Start()
     {
         interactionIcon.SetActive(false); // Ẩn biểu tượng tương tác ban đầu
+    }
+
+    void Update()
+    {
+        if (isHoldingSalt)
+        {
+            saltHoldTimer += Time.deltaTime;
+            Debug.Log($"Holding salt... {saltHoldTimer}");
+            if (saltHoldTimer >= saltHoldTimeRequired)
+            {
+                AddSaltToFood();
+                isHoldingSalt = false;
+                saltHoldTimer = 0f;
+            }
+        }
+
+        if (isHoldingMouse)
+        {
+            mouseHoldTimer += Time.deltaTime;
+            Debug.Log($"Holding mouse... {mouseHoldTimer}");
+            if (mouseHoldTimer >= mouseHoldTimeRequired)
+            {
+                AddMouseToFood();
+                isHoldingMouse = false;
+                mouseHoldTimer = 0f;
+            }
+        }
     }
 
     public void OnInteract(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
-            Debug.Log("InteractionDetector.OnInteract called");
-            interactableInRange?.Interact(); // Gọi phương thức Interact của đối tượng trong phạm vi nếu 
+            interactableInRange?.Interact();
         }
     }
+
+    public void OnAddSalt(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            isHoldingSalt = true;
+            interactionIcon.SetActive(true);
+            interactionAnimator.SetBool("isAddingSalt", true);
+            saltHoldTimer = 0f;
+        }
+        if (context.canceled)
+        {
+            isHoldingSalt = false;
+            interactionIcon.SetActive(false);
+            interactionAnimator.SetBool("isAddingSalt", false);
+            saltHoldTimer = 0f;
+        }
+    }
+
+    public void OnAddMouse(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            isHoldingMouse = true;
+            interactionIcon.SetActive(true);
+            interactionAnimator.SetBool("isAddingMouse", true);
+            mouseHoldTimer = 0f;
+        }
+        if (context.canceled)
+        {
+            isHoldingMouse = false;
+            interactionIcon.SetActive(false);
+            interactionAnimator.SetBool("isAddingMouse", false);
+            mouseHoldTimer = 0f;
+        }
+    }
+
+    private void AddSaltToFood()
+    {
+        PlayerMovement player = FindFirstObjectByType<PlayerMovement>();
+        if (player != null)
+        {
+            Debug.Log("Player found");
+            Food food = player.GetCarriedFood();
+            if (food != null)
+            {
+                Debug.Log("Food found, adding salt");
+                if(!food.isSalted && !food.isMouseAdded)
+                    food.AddSalt();
+            }
+            else
+            {
+                Debug.Log("Player is not carrying any food");
+            }
+        }
+    }
+
+    private void AddMouseToFood()
+    {
+        PlayerMovement player = FindFirstObjectByType<PlayerMovement>();
+        if (player != null)
+        {
+            Debug.Log("Player found");
+            Food food = player.GetCarriedFood();
+            if (food != null)
+            {
+                Debug.Log("Food found, adding mouse");
+                if (!food.isMouseAdded && !food.isSalted)
+                    food.AddMouse();
+            }
+            else
+            {
+                Debug.Log("Player is not carrying any food");
+            }
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.TryGetComponent(out IInteractable interactable) && interactable.canInteract())
+        if (collision.TryGetComponent(out IInteractable interactable) && interactable.canInteract())
         {
             interactableInRange = interactable;
-            //interactionIcon.SetActive(true); // Hiển thị biểu tượng tương tác khi có đối tượng trong phạm vi
         }
     }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.TryGetComponent(out IInteractable interactable) && interactable == interactableInRange)
         {
             interactableInRange = null;
-            interactionIcon.SetActive(false); // Ẩn biểu tượng tương tác khi không còn đối tượng trong phạm vi
+            interactionIcon.SetActive(false);
         }
     }
 }

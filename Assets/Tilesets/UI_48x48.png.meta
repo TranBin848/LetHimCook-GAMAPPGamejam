@@ -3184,10 +3184,10 @@ TextureImporter:
       name: UI_48x48_119
       rect:
         serializedVersion: 2
-        x: 395
-        y: 203
-        width: 26
-        height: 29
+        x: 437
+        y: 211
+        width: 39
+        height: 45
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -3206,10 +3206,10 @@ TextureImporter:
       name: UI_48x48_120
       rect:
         serializedVersion: 2
-        x: 443
-        y: 203
-        width: 26
-        height: 29
+        x: 677
+        y: 211
+        width: 39
+        height: 45
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -3228,10 +3228,10 @@ TextureImporter:
       name: UI_48x48_121
       rect:
         serializedVersion: 2
-        x: 491
-        y: 200
-        width: 26
-        height: 29
+        x: 485
+        y: 211
+        width: 39
+        height: 45
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -3250,10 +3250,10 @@ TextureImporter:
       name: UI_48x48_122
       rect:
         serializedVersion: 2
-        x: 539
-        y: 194
-        width: 26
-        height: 32
+        x: 533
+        y: 211
+        width: 39
+        height: 45
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -3272,10 +3272,10 @@ TextureImporter:
       name: UI_48x48_123
       rect:
         serializedVersion: 2
-        x: 587
-        y: 194
-        width: 26
-        height: 29
+        x: 581
+        y: 211
+        width: 39
+        height: 45
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -3294,10 +3294,10 @@ TextureImporter:
       name: UI_48x48_124
       rect:
         serializedVersion: 2
-        x: 635
-        y: 197
-        width: 26
-        height: 32
+        x: 629
+        y: 211
+        width: 39
+        height: 45
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -3492,10 +3492,10 @@ TextureImporter:
       name: UI_48x48_133
       rect:
         serializedVersion: 2
-        x: 395
-        y: 107
-        width: 26
-        height: 29
+        x: 437
+        y: 117
+        width: 39
+        height: 45
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -3514,10 +3514,10 @@ TextureImporter:
       name: UI_48x48_134
       rect:
         serializedVersion: 2
-        x: 443
-        y: 107
-        width: 26
-        height: 29
+        x: 677
+        y: 117
+        width: 39
+        height: 45
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -3536,10 +3536,10 @@ TextureImporter:
       name: UI_48x48_135
       rect:
         serializedVersion: 2
-        x: 491
-        y: 110
-        width: 26
-        height: 29
+        x: 485
+        y: 117
+        width: 39
+        height: 45
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -3558,10 +3558,10 @@ TextureImporter:
       name: UI_48x48_136
       rect:
         serializedVersion: 2
-        x: 539
-        y: 113
-        width: 26
-        height: 32
+        x: 533
+        y: 117
+        width: 39
+        height: 45
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -3580,10 +3580,10 @@ TextureImporter:
       name: UI_48x48_137
       rect:
         serializedVersion: 2
-        x: 587
-        y: 116
-        width: 26
-        height: 29
+        x: 581
+        y: 117
+        width: 39
+        height: 45
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -3602,10 +3602,10 @@ TextureImporter:
       name: UI_48x48_138
       rect:
         serializedVersion: 2
-        x: 635
-        y: 110
-        width: 26
-        height: 32
+        x: 629
+        y: 117
+        width: 39
+        height: 45
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -3950,6 +3950,94 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: UI_48x48_154
+      rect:
+        serializedVersion: 2
+        x: 725
+        y: 211
+        width: 39
+        height: 45
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ce2694460f18458468c08c0e9bed37ef
+      internalID: 240212715
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_48x48_155
+      rect:
+        serializedVersion: 2
+        x: 773
+        y: 211
+        width: 39
+        height: 45
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 405a713d91a8acf47834b944d91963b1
+      internalID: -808963989
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_48x48_156
+      rect:
+        serializedVersion: 2
+        x: 725
+        y: 117
+        width: 39
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5546865633ad16d43a98b85f1a9e2aa4
+      internalID: -820138204
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_48x48_157
+      rect:
+        serializedVersion: 2
+        x: 773
+        y: 117
+        width: 39
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 00220c0050913d14596014955dfc8fe6
+      internalID: -301177455
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -4026,6 +4114,10 @@ TextureImporter:
       UI_48x48_151: 1818824196
       UI_48x48_152: 1177650647
       UI_48x48_153: 1337823484
+      UI_48x48_154: 240212715
+      UI_48x48_155: -808963989
+      UI_48x48_156: -820138204
+      UI_48x48_157: -301177455
       UI_48x48_16: 536647170593222066
       UI_48x48_17: -7102955636642921907
       UI_48x48_18: 5497923207781471131

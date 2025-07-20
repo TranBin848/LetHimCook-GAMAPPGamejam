@@ -27,7 +27,7 @@
                     "name": "Fire",
                     "type": "Button",
                     "id": "aa6926f6-aa6a-496d-b983-0f65851e43b0",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -36,6 +36,24 @@
                     "name": "Interact",
                     "type": "Button",
                     "id": "f6e04a9a-c644-472d-bbb1-17b37275e564",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "AddSalt",
+                    "type": "Button",
+                    "id": "e5c8b30a-8196-42ae-8f41-9c765519505c",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "AddMouse",
+                    "type": "Button",
+                    "id": "7eea30b4-6125-44e0-b02e-789e89dcd5ff",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -271,6 +289,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c1f931a4-ae79-4245-aab3-74bb7e0b37c1",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AddSalt",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bede0b6c-d795-4795-b595-72b7d79b31d8",
+                    "path": "<Keyboard>/g",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AddMouse",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

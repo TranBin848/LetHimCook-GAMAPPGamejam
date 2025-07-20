@@ -10,7 +10,12 @@ public class PlayerMovement : MonoBehaviour
     private Animator animator;
 
     private bool isCarryingFood = false; // Trạng thái cầm món ăn
-    private Food carriedFood; 
+    private Food carriedFood;
+
+    // Thuộc tính nêm muối
+    public float saltHoldTimeRequired = 3f;
+    private float saltHoldTimer = 0f;
+    private bool isHoldingSalt = false;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();

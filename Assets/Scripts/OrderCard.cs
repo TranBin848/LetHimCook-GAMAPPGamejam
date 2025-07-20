@@ -53,5 +53,6 @@ public class OrderCard : MonoBehaviour
                 OrderManager.Instance.RemoveOrder(this);
             }
         }
+
     }
 }

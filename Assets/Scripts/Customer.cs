@@ -107,6 +107,7 @@ public class Customer : MonoBehaviour, IInteractable
             {
                 Destroy(currentSpeechBubble);
             }
+            StartCoroutine(LeaveAngryRestaurant());
             // TODO: Giảm danh tiếng quán (cần tích hợp với hệ thống danh tiếng)
         }
     }

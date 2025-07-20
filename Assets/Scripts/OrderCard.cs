@@ -11,7 +11,9 @@ public class OrderCard : MonoBehaviour
     private float prepTimer;
     private Customer customer;
     public DishData dishData { get; private set; }
-
+    public bool hasFinished = false;
+    public Image backgroundImage; // background của card
+    public Color finishedColor = new Color(0.8f, 1f, 0.8f, 1f); // xanh nhạt
     private void Start()
     {
         slider.minValue = 0f;
@@ -53,6 +55,13 @@ public class OrderCard : MonoBehaviour
                 OrderManager.Instance.RemoveOrder(this);
             }
         }
-
+    }
+    public void MarkAsFinished()
+    {
+        hasFinished = true;
+        if (backgroundImage != null)
+        {
+            backgroundImage.color = finishedColor;
+        }
     }
 }

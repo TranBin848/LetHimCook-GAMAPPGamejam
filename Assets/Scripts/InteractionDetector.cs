@@ -61,7 +61,6 @@ public class InteractionDetector : MonoBehaviour
         {
             if (angerCooldown <= 0f)
             {
-                Debug.Log("Check");
                 interactionIcon.SetActive(true);
                 GameManager.Instance.IncreaseAnger(GameManager.Instance.angerIncreaseRate);
                 angerCooldown = angerCooldownDuration;

@@ -40,6 +40,7 @@ public class CustomerSpawner : MonoBehaviour
             customerScript.spawnPoint = spawnPoint;
 
             targetChair.isOccupied = true;
+            AudioManager.Instance.playitemSFX("DoorBell");
         }
         else
         {

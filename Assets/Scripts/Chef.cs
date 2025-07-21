@@ -25,6 +25,10 @@ public class Chef : MonoBehaviour
     public GameObject interactionIcon; // Biểu tượng tương tác
     public GameObject Pan;
     public Animator interactionAnimator;
+
+    private bool isCookingSoundPlaying = false;
+    private bool isAngryNoEmptyPosition = false;
+
     void Start()
     {
         interactionIcon.SetActive(false); // Ẩn biểu tượng tương tác ban đầu
@@ -49,18 +53,23 @@ public class Chef : MonoBehaviour
     }
 
     public void SetAngryMouse(bool value)
-    {
-        Debug.Log("CheckMouse");
-        if (value == true) interactionIcon.SetActive(true);
-        else interactionIcon.SetActive(false);
+    { 
+        if (value == true)
+        {
+            interactionIcon.SetActive(true);
+            AudioManager.Instance.playchefSFX("Angry"); // 🔊 Play khi giận dữ
+        }
         interactionAnimator.SetBool("isAngryMouse", value);
     }
 
     public void SetAngrySalt(bool value)
     {
-        Debug.Log("CheckSalt");
-        if (value == true) interactionIcon.SetActive(true);
-        else interactionIcon.SetActive(false);
+        
+        if (value == true)
+        {
+            interactionIcon.SetActive(true);
+            AudioManager.Instance.playchefSFX("Angry"); // 🔊 Play khi giận dữ
+        }
         interactionAnimator.SetBool("isAngrySalt", value);
     }
 
@@ -127,7 +136,7 @@ public class Chef : MonoBehaviour
                     Debug.Log(collectFishTimer);
                     if (collectFishTimer <= 0)
                     {
-                        animator.SetTrigger("CollectIngredients");
+                        //animator.SetTrigger("CollectIngredients");
                         currentState = BossState.CollectingVegetable;
                         agent.SetDestination(currentOrder.dishData.vegetableIngredient.transform.position);
                         collectFishTimer = 2f;
@@ -142,7 +151,7 @@ public class Chef : MonoBehaviour
                     collectVegetableTimer -= Time.deltaTime;
                     if (collectVegetableTimer <= 0)
                     {
-                        animator.SetTrigger("CollectIngredients");
+                        //animator.SetTrigger("CollectIngredients");
                         currentState = BossState.MovingToKitchen;
                         agent.SetDestination(kitchenPoint.position);
                         collectVegetableTimer = 2f;
@@ -156,9 +165,16 @@ public class Chef : MonoBehaviour
                 if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
                 {
                     animator.SetBool("isCooking", true); // Animation nấu ăn
-                    interactionIcon.SetActive(true); // Hiển thị biểu tượng tương tác khi khách rời đi
+                    interactionIcon.SetActive(true); 
                     Pan.SetActive(true); // Hiển thị chảo khi nấu ăn
                     interactionAnimator.SetBool("isCooking", true); // Bật animation nấu ăn trong InteractionController
+                                                                    // 🔥 Play clock tick sound nếu chưa phát
+                    if (!isCookingSoundPlaying)
+                    {
+                        AudioManager.Instance.playchefSFX("ClockTick");
+                        isCookingSoundPlaying = true;
+                    }
+
                     cookingTimer -= Time.deltaTime;
                     if (cookingTimer <= 0)
                     {
@@ -168,6 +184,10 @@ public class Chef : MonoBehaviour
                         interactionIcon.SetActive(false); // Ẩn biểu tượng tương tác
                         Pan.SetActive(false); // Ẩn chảo khi nấu ăn xong
                         interactionAnimator.SetBool("isCooking", false); // Tắt animation nấu ăn trong InteractionController
+
+                        // 🔥 Stop clock tick sound khi nấu xong
+                        AudioManager.Instance.stopchefSFX("ClockTick");
+                        isCookingSoundPlaying = false;
 
                         // Sau khi nấu xong, chuyển sang MovingToTable
                         currentState = BossState.MovingToTable;
@@ -191,9 +211,8 @@ public class Chef : MonoBehaviour
             case BossState.MovingToTable:
                 if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
                 {
-                    animator.SetBool("isCooking", true); // Dừng animation di chuyển
+                    animator.SetBool("isCooking", false);
                     Transform emptyPos = GetFirstEmptyTablePosition();
-
                     switch (currentOrder.dishData.dishId)
                     {
                         case 1:
@@ -209,6 +228,12 @@ public class Chef : MonoBehaviour
 
                     if (emptyPos.childCount == 0)
                     {
+                        if (isAngryNoEmptyPosition)
+                        {
+                            interactionAnimator.SetBool("isAngry", false);
+                            interactionIcon.SetActive(false); // Ẩn biểu tượng tương tác khi đặt món thành công
+                            isAngryNoEmptyPosition = false;
+                        }
                         Instantiate(dishPrefab, emptyPos.position, Quaternion.identity, emptyPos);
 
                         // Đánh dấu order đã hoàn thành
@@ -217,15 +242,21 @@ public class Chef : MonoBehaviour
                         interactionIcon.SetActive(false);
 
                         animator.SetBool("isCooking", false);
+                        AudioManager.Instance.playchefSFX("Interact");
                         angerTimer = 0f; // Reset timer nếu đã đặt món thành công
+
                         currentState = BossState.Idle;
                     }
                     else
                     {
-                        // Không có chỗ trống
-                        interactionIcon.SetActive(true);
-                        interactionAnimator.SetBool("isAngry", true);
-
+                        if(!isAngryNoEmptyPosition)
+                        {
+                            AudioManager.Instance.playchefSFX("Angry");
+                            // Không có chỗ trống
+                            interactionIcon.SetActive(true);
+                            interactionAnimator.SetBool("isAngry", true);
+                            isAngryNoEmptyPosition = true;
+                        }
                         // Tăng anger mỗi 7 giây
                         angerTimer -= Time.deltaTime;
                         if (angerTimer <= 0f)

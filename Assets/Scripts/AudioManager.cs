@@ -6,7 +6,7 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
     public Sound[] musicSounds, sfxSounds;
-    public AudioSource musicSource, customerSFXSource, chefSFXSource, playerSFXSource;
+    public AudioSource musicSource, customerSFXSource, chefSFXSource, playerSFXSource, itemSFXSource;
 
     private void Awake()
     {
@@ -47,7 +47,7 @@ public class AudioManager : MonoBehaviour
         }
 
         // Phát âm thanh một lần
-        customerSFXSource.PlayOneShot(s.clip);
+        chefSFXSource.PlayOneShot(s.clip);
 
         // Dừng sau một khoảng thời gian
         StartCoroutine(StopSFXAfterTime(duration));
@@ -58,7 +58,21 @@ public class AudioManager : MonoBehaviour
         customerSFXSource.Stop();
     }
 
-    public void playSFX(string name)
+    public void playplayerSFX(string name)
+    {
+        Sound s = System.Array.Find(sfxSounds, sound => sound.name == name);
+        if (s == null)
+        {
+            Debug.LogWarning("Sound: " + name + " not found!");
+            return;
+        }
+        playerSFXSource.PlayOneShot(s.clip);
+    }
+    public void stopplayerSFX(string clipName)
+    {
+        playerSFXSource.Stop();
+    }
+    public void playcustomerSFX(string name)
     {
         Sound s = System.Array.Find(sfxSounds, sound => sound.name == name);
         if (s == null)
@@ -67,6 +81,33 @@ public class AudioManager : MonoBehaviour
             return;
         }
         customerSFXSource.PlayOneShot(s.clip);
+    }
+
+    public void playitemSFX(string name)
+    {
+        Sound s = System.Array.Find(sfxSounds, sound => sound.name == name);
+        if (s == null)
+        {
+            Debug.LogWarning("Sound: " + name + " not found!");
+            return;
+        }
+        itemSFXSource.PlayOneShot(s.clip);
+    }
+
+    public void playchefSFX(string name)
+    {
+        Sound s = System.Array.Find(sfxSounds, sound => sound.name == name);
+        if (s == null)
+        {
+            Debug.LogWarning("Sound: " + name + " not found!");
+            return;
+        }
+        chefSFXSource.PlayOneShot(s.clip);
+    }
+
+    public void stopchefSFX(string clipName)
+    {
+        chefSFXSource.Stop();  
     }
 
     public void ToggleMusic()

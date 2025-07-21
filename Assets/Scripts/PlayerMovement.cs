@@ -29,22 +29,44 @@ public class PlayerMovement : MonoBehaviour
 
     public void Move(InputAction.CallbackContext context)
     {
-        animator.SetBool("isWalking", true); // Cập nhật trạng thái hoạt hình
+        animator.SetBool("isWalking", true);
+
         if (context.canceled)
         {
-            animator.SetBool("isWalking", false); // Dừng hoạt hình khi không có di chuyển
+            animator.SetBool("isWalking", false);
             animator.SetFloat("LastInputX", movement.x);
             animator.SetFloat("LastInputY", movement.y);
             if (carriedFood != null)
                 carriedFood.UpdatePosition(new Vector2(animator.GetFloat("LastInputX"), animator.GetFloat("LastInputY")));
+
+            // 🛑 Stop footstep sound khi dừng
+            AudioManager.Instance.stopplayerSFX("Footsteps");
         }
 
-        // Lấy giá trị di chuyển từ Input System
         movement = context.ReadValue<Vector2>();
-        animator.SetFloat("InputX", movement.x); // Cập nhật giá trị di chuyển theo trục X
-        animator.SetFloat("InputY", movement.y); // Cập nhật giá trị di chuyển theo trục Y
+        animator.SetFloat("InputX", movement.x);
+        animator.SetFloat("InputY", movement.y);
+
         if (carriedFood != null)
             carriedFood.UpdatePosition(movement);
+
+        // 🔊 Play footstep sound khi di chuyển
+        if (movement.magnitude > 0.1f)
+        {
+            // Nếu chưa play thì play
+            if (!AudioManager.Instance.playerSFXSource.isPlaying)
+            {
+                AudioManager.Instance.playplayerSFX("Footsteps");
+            }
+        }
+        else
+        {
+            // Nếu đang play thì stop
+            if (AudioManager.Instance.playerSFXSource.isPlaying)
+            {
+                AudioManager.Instance.stopplayerSFX("Footsteps");
+            }
+        }
     }
 
     void FixedUpdate()

@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
     private float reputation = 100f;
     public float maxAnger = 100f;
     public float maxReputation = 100f;
-    public float angerIncreaseRate = 5f;
+    public float angerIncreaseRate = 10f;
     public float reputationDecreaseOnTimeout = 5f;
     public float reputationDecreaseOnOrderFailure = 7f;
     public float reputationDecreaseOnSalted = 10f;

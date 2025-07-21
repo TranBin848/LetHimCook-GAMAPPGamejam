@@ -34,11 +34,13 @@ public class Chef : MonoBehaviour, IInteractable
 
     public ChefDialogue dialogueData;
     public GameObject dialoguePanel; // Panel hiển thị hội thoại
-    public TMP_Text diaLogueText, nameText;
+    public TMP_Text diaLogueText, nameText, instructionText;
     public Image portraitImage;
 
     private int dialogueIndex;
     private bool isTyping, isDialogueActive;
+
+    private bool hasInteracted = false;
 
     void Start()
     {
@@ -86,6 +88,18 @@ public class Chef : MonoBehaviour, IInteractable
 
     void Update()
     {
+        // Nếu chưa interact thì đứng yên không làm gì
+        if (!hasInteracted)
+        {
+            animator.SetBool("isMoving", false);
+            animator.SetBool("isResting", false);
+            animator.SetBool("isCooking", false);
+            agent.isStopped = true; // Dừng agent
+            return;
+        }
+
+        agent.isStopped = false; // Mở agent khi đã interact
+
         // Cập nhật animation di chuyển
         Vector3 velocity = agent.velocity;
         if (velocity.magnitude > 0.1f)
@@ -291,12 +305,16 @@ public class Chef : MonoBehaviour, IInteractable
         }
         if(isDialogueActive)
         {
+            AudioManager.Instance.stopchefSFX("ChefPortrait"); // 🔊 Dừng âm thanh khi kết thúc hội thoại
+            AudioManager.Instance.playchefSFX("ChefPortrait"); // 🔊 Phát âm thanh khi bắt đầu hội thoại
             NextLine();
         }
         else
         {
             // Bắt đầu hội thoại
             StartDialogue();
+            instructionText.text = ""; // Xóa hướng dẫn khi bắt đầu hội thoại
+            AudioManager.Instance.playchefSFX("ChefPortrait"); // 🔊 Phát âm thanh khi bắt đầu hội thoại
         }
     }
 
@@ -335,6 +353,8 @@ public class Chef : MonoBehaviour, IInteractable
         else
         {
             EndDialogue();
+            AudioManager.Instance.stopchefSFX("ChefPortrait"); // 🔊 Dừng âm thanh khi kết thúc hội thoại
+            hasInteracted = true; // ✅ Bắt đầu hoạt động sau khi kết thúc hội thoại
         }
     }
     IEnumerator TypeLine()

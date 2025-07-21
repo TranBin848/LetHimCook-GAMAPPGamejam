@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ChefDiaLogue
   m_EditorClassIdentifier: 
   chefName: Chef Chef Chef
-  ncpPortrait: {fileID: 0}
+  ncpPortrait: {fileID: 4898675969941773921, guid: e0e8bde58b7256f44a16a1552f60cae3, type: 3}
   dialogueLines:
   - Welcome to my seafood restaurant, newbie!
   - "Your job's pretty simple, buddy. When customers arrive, <b><color=red>just hit

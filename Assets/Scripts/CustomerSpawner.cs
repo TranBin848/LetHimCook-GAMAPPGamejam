@@ -13,7 +13,7 @@ public class CustomerSpawner : MonoBehaviour
 
     void Start()
     {
-        InvokeRepeating("SpawnCustomer", 1f, spawnInterval);
+        InvokeRepeating("SpawnCustomer", 40f, spawnInterval);
     }
 
     void SpawnCustomer()

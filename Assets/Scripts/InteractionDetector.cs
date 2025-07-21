@@ -102,18 +102,34 @@ public class InteractionDetector : MonoBehaviour
 
     public void OnAddSalt(InputAction.CallbackContext context)
     {
+        PlayerMovement player = FindFirstObjectByType<PlayerMovement>();
+
         if (context.started)
         {
-            if (isInKitchen) // ✅ chỉ bắt đầu khi trong kitchen
+            if (isInKitchen && player != null && player.GetMovement().magnitude < 0.1f)
             {
-                isHoldingSalt = true;
-                interactionIcon.SetActive(true);
-                interactionAnimator.SetBool("isAddingSalt", true);
-                saltHoldTimer = 0f;
+                Food food = player.GetCarriedFood();
+                if (food != null && !food.isSalted && !food.isMouseAdded) // ✅ kiểm tra trước
+                {
+                    isHoldingSalt = true;
+                    interactionIcon.SetActive(true);
+                    interactionAnimator.SetBool("isAddingSalt", true);
+                    saltHoldTimer = 0f;
+
+                    // 🔥 Player chạy anim adding salt
+                    player.GetComponent<Animator>().SetBool("isAddingSalt", true);
+
+                    // 🔊 Play clocktick
+                    AudioManager.Instance.playplayerSFX("ClockTick");
+                }
+                else
+                {
+                    Debug.Log("Food already salted or has mouse, cannot add salt!");
+                }
             }
             else
             {
-                Debug.Log("Not in kitchen, cannot add salt!");
+                Debug.Log("Not in kitchen or not standing still, cannot add salt!");
             }
         }
         if (context.canceled)
@@ -122,23 +138,45 @@ public class InteractionDetector : MonoBehaviour
             interactionIcon.SetActive(false);
             interactionAnimator.SetBool("isAddingSalt", false);
             saltHoldTimer = 0f;
+
+            if (player != null)
+                player.GetComponent<Animator>().SetBool("isAddingSalt", false);
+
+            // 🔊 Stop clocktick
+            AudioManager.Instance.stopplayerSFX("ClockTick");
         }
     }
 
     public void OnAddMouse(InputAction.CallbackContext context)
     {
+        PlayerMovement player = FindFirstObjectByType<PlayerMovement>();
+
         if (context.started)
         {
-            if (isInKitchen) // ✅ chỉ bắt đầu khi trong kitchen
+            if (isInKitchen && player != null && player.GetMovement().magnitude < 0.1f)
             {
-                isHoldingMouse = true;
-                interactionIcon.SetActive(true);
-                interactionAnimator.SetBool("isAddingMouse", true);
-                mouseHoldTimer = 0f;
+                Food food = player.GetCarriedFood();
+                if (food != null && !food.isMouseAdded && !food.isSalted) // ✅ kiểm tra trước
+                {
+                    isHoldingMouse = true;
+                    interactionIcon.SetActive(true);
+                    interactionAnimator.SetBool("isAddingMouse", true);
+                    mouseHoldTimer = 0f;
+
+                    // 🔥 Player chạy anim adding mouse
+                    player.GetComponent<Animator>().SetBool("isAddingMouse", true);
+
+                    // 🔊 Play clocktick
+                    AudioManager.Instance.playplayerSFX("ClockTick");
+                }
+                else
+                {
+                    Debug.Log("Food already has mouse or is salted, cannot add mouse!");
+                }
             }
             else
             {
-                Debug.Log("Not in kitchen, cannot add mouse!");
+                Debug.Log("Not in kitchen or not standing still, cannot add mouse!");
             }
         }
         if (context.canceled)
@@ -147,6 +185,12 @@ public class InteractionDetector : MonoBehaviour
             interactionIcon.SetActive(false);
             interactionAnimator.SetBool("isAddingMouse", false);
             mouseHoldTimer = 0f;
+
+            if (player != null)
+                player.GetComponent<Animator>().SetBool("isAddingMouse", false);
+
+            // 🔊 Stop clocktick
+            AudioManager.Instance.stopplayerSFX("ClockTick");
         }
     }
 

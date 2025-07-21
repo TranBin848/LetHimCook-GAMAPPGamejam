@@ -36,8 +36,8 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("isWalking", false);
             animator.SetFloat("LastInputX", movement.x);
             animator.SetFloat("LastInputY", movement.y);
-            if (carriedFood != null)
-                carriedFood.UpdatePosition(new Vector2(animator.GetFloat("LastInputX"), animator.GetFloat("LastInputY")));
+            //if (carriedFood != null)
+            //    carriedFood.UpdatePosition(new Vector2(animator.GetFloat("LastInputX"), animator.GetFloat("LastInputY")));
 
             // 🛑 Stop footstep sound khi dừng
             AudioManager.Instance.stopplayerSFX("Footsteps");
@@ -47,8 +47,8 @@ public class PlayerMovement : MonoBehaviour
         animator.SetFloat("InputX", movement.x);
         animator.SetFloat("InputY", movement.y);
 
-        if (carriedFood != null)
-            carriedFood.UpdatePosition(movement);
+        //if (carriedFood != null)
+        //    carriedFood.UpdatePosition(movement);
 
         // 🔊 Play footstep sound khi di chuyển
         if (movement.magnitude > 0.1f)
@@ -78,16 +78,21 @@ public class PlayerMovement : MonoBehaviour
     {
         isCarryingFood = isCarrying;
         carriedFood = food;
-        animator.SetBool("isBringFood", isCarryingFood);
-        if (isCarrying && food != null)
-        {
-            // Khởi tạo vị trí món ăn dựa trên hướng hiện tại
-            food.UpdatePosition(new Vector2(animator.GetFloat("LastInputX"), animator.GetFloat("LastInputY")));
-        }
+        //animator.SetBool("isBringFood", isCarryingFood);
+        //if (isCarrying && food != null)
+        //{
+        //    // Khởi tạo vị trí món ăn dựa trên hướng hiện tại
+        //    food.UpdatePosition(new Vector2(animator.GetFloat("LastInputX"), animator.GetFloat("LastInputY")));
+        //}
     }
 
     public Food GetCarriedFood()
     {
         return carriedFood;
+    }
+
+    public Vector2 GetMovement()
+    {
+        return movement;
     }
 }

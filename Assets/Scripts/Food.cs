@@ -17,7 +17,8 @@ public class Food : MonoBehaviour, IInteractable
             if (player != null)
             {
                 transform.SetParent(player.transform);
-                food.transform.localScale = new Vector3(0.6f, 0.6f, 0.6f);
+                food.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+                food.transform.localPosition = new Vector3(0, 0.4f, 0); // Đặt vị trí món ăn khi cầm
                 canBeInteracted = false;
                 player.SetCarryingFood(true, this);
 
@@ -46,20 +47,20 @@ public class Food : MonoBehaviour, IInteractable
         return canBeInteracted;
     }
 
-    public void UpdatePosition(Vector2 direction)
-    {
-        if (!canBeInteracted && transform.parent != null)
-        {
-            Vector2 newPos = new Vector2(0, -0.5f);
-            if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
-            {
-                newPos = direction.x > 0 ? new Vector2(0.6f, -0.4f) : new Vector2(-0.55f, -0.4f);
-            }
-            else if (Mathf.Abs(direction.y) > 0)
-            {
-                newPos = direction.y > 0 ? new Vector2(0, 0.6f) : new Vector2(0, -0.5f);
-            }
-            transform.localPosition = new Vector3(newPos.x, newPos.y, 0);
-        }
-    }
+    //public void UpdatePosition(Vector2 direction)
+    //{
+    //    if (!canBeInteracted && transform.parent != null)
+    //    {
+    //        Vector2 newPos = new Vector2(0, -0.5f);
+    //        if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+    //        {
+    //            newPos = direction.x > 0 ? new Vector2(0.6f, -0.4f) : new Vector2(-0.55f, -0.4f);
+    //        }
+    //        else if (Mathf.Abs(direction.y) > 0)
+    //        {
+    //            newPos = direction.y > 0 ? new Vector2(0, 0.6f) : new Vector2(0, -0.5f);
+    //        }
+    //        transform.localPosition = new Vector3(newPos.x, newPos.y, 0);
+    //    }
+    //}
 }

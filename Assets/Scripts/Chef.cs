@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using TMPro;
+using UnityEngine.UI;
+using System.Collections;
 
-public class Chef : MonoBehaviour
+public class Chef : MonoBehaviour, IInteractable
 {
     public Transform storagePoint;
     public Transform kitchenPoint;
@@ -28,6 +31,14 @@ public class Chef : MonoBehaviour
 
     private bool isCookingSoundPlaying = false;
     private bool isAngryNoEmptyPosition = false;
+
+    public ChefDialogue dialogueData;
+    public GameObject dialoguePanel; // Panel hiển thị hội thoại
+    public TMP_Text diaLogueText, nameText;
+    public Image portraitImage;
+
+    private int dialogueIndex;
+    private bool isTyping, isDialogueActive;
 
     void Start()
     {
@@ -270,5 +281,104 @@ public class Chef : MonoBehaviour
                 }
                 break;
         }
+    }
+
+    public void Interact()
+    {
+        if (dialogueData == null)
+        {
+            return;
+        }
+        if(isDialogueActive)
+        {
+            NextLine();
+        }
+        else
+        {
+            // Bắt đầu hội thoại
+            StartDialogue();
+        }
+    }
+
+    public bool canInteract()
+    {
+        return !isDialogueActive;
+    }
+
+    private void StartDialogue()
+    {
+        isDialogueActive = true;
+        dialogueIndex = 0;
+
+        dialoguePanel.SetActive(true);
+        
+        nameText.text = dialogueData.chefName;
+        portraitImage.sprite = dialogueData.ncpPortrait;
+        diaLogueText.text = "";
+        isTyping = true;
+        StartCoroutine(TypeLine());
+    
+    }
+
+    void NextLine()
+    {
+        if (isTyping)
+        {
+            StopAllCoroutines();
+            diaLogueText.text = dialogueData.dialogueLines[dialogueIndex];
+            isTyping = false;
+        }
+        else if (++dialogueIndex < dialogueData.dialogueLines.Length)
+        {
+            StartCoroutine(TypeLine());
+        }
+        else
+        {
+            EndDialogue();
+        }
+    }
+    IEnumerator TypeLine()
+    {
+        isTyping = true;
+        diaLogueText.text = "";
+
+        string line = dialogueData.dialogueLines[dialogueIndex];
+        int i = 0;
+
+        while (i < line.Length)
+        {
+            if (line[i] == '<')
+            {
+                // Bắt đầu tag rich text
+                int closingIndex = line.IndexOf('>', i);
+                if (closingIndex != -1)
+                {
+                    string tag = line.Substring(i, closingIndex - i + 1);
+                    diaLogueText.text += tag;
+                    i = closingIndex + 1;
+                    continue;
+                }
+            }
+
+            diaLogueText.text += line[i];
+            i++;
+            yield return new WaitForSeconds(dialogueData.typingSpeed);
+        }
+
+        isTyping = false;
+
+        // Tự động chuyển sang dòng tiếp theo nếu cần
+        if (dialogueData.autoProgressLines.Length > dialogueIndex && dialogueData.autoProgressLines[dialogueIndex])
+        {
+            yield return new WaitForSeconds(dialogueData.autoProgressDelay);
+            NextLine();
+        }
+    }
+    public void EndDialogue()
+    {
+        StopAllCoroutines();
+        isDialogueActive = false;
+        diaLogueText.text = "";
+        dialoguePanel.SetActive(false);
     }
 }

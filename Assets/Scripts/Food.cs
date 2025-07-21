@@ -13,14 +13,17 @@ public class Food : MonoBehaviour, IInteractable
     {
         if (canBeInteracted)
         {
-            // Gắn món ăn vào người chơi
             PlayerMovement player = FindFirstObjectByType<PlayerMovement>();
             if (player != null)
             {
                 transform.SetParent(player.transform);
-                food.transform.localScale = new Vector3(0.6f, 0.6f, 0.6f); // Giảm kích thước món ăn
-                canBeInteracted = false; // Ngăn tương tác lại
-                player.SetCarryingFood(true, this); // Cập nhật trạng thái người chơi
+                food.transform.localScale = new Vector3(0.6f, 0.6f, 0.6f);
+                canBeInteracted = false;
+                player.SetCarryingFood(true, this);
+
+                // ✅ Disable collider khi được carry
+                Collider2D col = GetComponent<Collider2D>();
+                if (col != null) col.enabled = false;
             }
         }
     }

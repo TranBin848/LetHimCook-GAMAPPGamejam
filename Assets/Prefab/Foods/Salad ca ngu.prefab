@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -3799767170091983640}
   m_Layer: 0
   m_Name: Salad ca ngu
-  m_TagString: Untagged
+  m_TagString: Food
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -149,3 +149,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dish: {fileID: 11400000, guid: bd926665b5994964b934604dfbe64e06, type: 2}
   food: {fileID: 1903387054680271639}
+  isSalted: 0
+  isMouseAdded: 0

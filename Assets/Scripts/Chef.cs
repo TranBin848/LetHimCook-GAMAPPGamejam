@@ -18,6 +18,8 @@ public class Chef : MonoBehaviour
     public float collectVegetableTimer = 2f;
     public float cookingTimer = 5f;
     public float placeDishTimer = 1f;
+    private float angerTimer = 0f;
+    public float angerIncreaseInterval = 7f;
     private OrderCard currentOrder; // OrderCard đang xử lý
 
     public GameObject interactionIcon; // Biểu tượng tương tác
@@ -44,6 +46,22 @@ public class Chef : MonoBehaviour
         }
         //Debug.LogWarning("Không còn chỗ trống trên bàn!");
         return tablePositions[0]; // fallback trả về vị trí đầu tiên nếu full
+    }
+
+    public void SetAngryMouse(bool value)
+    {
+        Debug.Log("CheckMouse");
+        if (value == true) interactionIcon.SetActive(true);
+        else interactionIcon.SetActive(false);
+        interactionAnimator.SetBool("isAngryMouse", value);
+    }
+
+    public void SetAngrySalt(bool value)
+    {
+        Debug.Log("CheckSalt");
+        if (value == true) interactionIcon.SetActive(true);
+        else interactionIcon.SetActive(false);
+        interactionAnimator.SetBool("isAngrySalt", value);
     }
 
     void Update()
@@ -174,32 +192,32 @@ public class Chef : MonoBehaviour
                 if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
                 {
                     animator.SetBool("isCooking", true); // Dừng animation di chuyển
-                    // Đặt món ăn prefab lên bàn
                     Transform emptyPos = GetFirstEmptyTablePosition();
-                    //Debug.Log(currentOrder.dishData.dishId);
-                    switch(currentOrder.dishData.dishId)
+
+                    switch (currentOrder.dishData.dishId)
                     {
-                        case 1: // Món ăn 1
+                        case 1:
                             dishPrefab = dishList[0];
                             break;
-                        case 2: // Món ăn 2
+                        case 2:
                             dishPrefab = dishList[1];
                             break;
-                        case 3: // Món ăn 3
+                        case 3:
                             dishPrefab = dishList[2];
                             break;
                     }
+
                     if (emptyPos.childCount == 0)
                     {
                         Instantiate(dishPrefab, emptyPos.position, Quaternion.identity, emptyPos);
 
                         // Đánh dấu order đã hoàn thành
                         currentOrder.MarkAsFinished();
-                        // Tắt animation giận dữ nếu đang bật
                         interactionAnimator.SetBool("isAngry", false);
                         interactionIcon.SetActive(false);
 
                         animator.SetBool("isCooking", false);
+                        angerTimer = 0f; // Reset timer nếu đã đặt món thành công
                         currentState = BossState.Idle;
                     }
                     else
@@ -207,6 +225,14 @@ public class Chef : MonoBehaviour
                         // Không có chỗ trống
                         interactionIcon.SetActive(true);
                         interactionAnimator.SetBool("isAngry", true);
+
+                        // Tăng anger mỗi 7 giây
+                        angerTimer -= Time.deltaTime;
+                        if (angerTimer <= 0f)
+                        {
+                            GameManager.Instance.IncreaseAnger(GameManager.Instance.angerIncreaseRate);
+                            angerTimer = angerIncreaseInterval;
+                        }
 
                         // Giữ nguyên state MovingToTable, Chef sẽ đứng im chờ
                     }

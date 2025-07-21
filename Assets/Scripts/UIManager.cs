@@ -46,7 +46,6 @@ public class UIManager : MonoBehaviour
 
         // Cập nhật Reputation
         float reputation = GameManager.Instance.GetReputation();
-        Debug.Log($"Reputation: {reputation}/{GameManager.Instance.maxReputation}");
         reputationSlider.value = reputation;
         reputationFill.fillAmount = reputation / GameManager.Instance.maxReputation;
         //reputationText.text = $"Reputation: {Mathf.RoundToInt(reputation)}/100";

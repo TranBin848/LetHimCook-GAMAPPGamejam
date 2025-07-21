@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5625170433118911876}
   m_Layer: 0
   m_Name: Ca dieu hong chien xu
-  m_TagString: Untagged
+  m_TagString: Food
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -149,3 +149,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dish: {fileID: 11400000, guid: 5cf86116210a1604cba144928016e963, type: 2}
   food: {fileID: 3114623922116572180}
+  isSalted: 0
+  isMouseAdded: 0

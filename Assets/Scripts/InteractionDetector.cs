@@ -16,19 +16,28 @@ public class InteractionDetector : MonoBehaviour
     public float mouseHoldTimeRequired = 3f;
     private bool isHoldingMouse = false;
 
+    private float angerCooldown = 0f;
+    public float angerCooldownDuration = 2f; // chỉ tăng giận dữ mỗi 1 giây
+
     private bool isInKitchen = false; // ✅ biến kiểm tra có trong kitchen không
+    private bool isInChefVision = false; // ✅ biến kiểm tra có trong ChefVision không
+
+    public Chef chef;
 
     void Start()
     {
+        chef = FindFirstObjectByType<Chef>();
         interactionIcon.SetActive(false); // Ẩn biểu tượng tương tác ban đầu
     }
 
     void Update()
     {
-        if (isHoldingSalt && isInKitchen) // ✅ chỉ thực hiện nếu đang trong kitchen
+        if (angerCooldown > 0)
+            angerCooldown -= Time.deltaTime;
+
+        if (isHoldingSalt && isInKitchen)
         {
             saltHoldTimer += Time.deltaTime;
-            Debug.Log($"Holding salt... {saltHoldTimer}");
             if (saltHoldTimer >= saltHoldTimeRequired)
             {
                 AddSaltToFood();
@@ -37,15 +46,49 @@ public class InteractionDetector : MonoBehaviour
             }
         }
 
-        if (isHoldingMouse && isInKitchen) // ✅ chỉ thực hiện nếu đang trong kitchen
+        if (isHoldingMouse && isInKitchen)
         {
             mouseHoldTimer += Time.deltaTime;
-            Debug.Log($"Holding mouse... {mouseHoldTimer}");
             if (mouseHoldTimer >= mouseHoldTimeRequired)
             {
                 AddMouseToFood();
                 isHoldingMouse = false;
                 mouseHoldTimer = 0f;
+            }
+        }
+
+        if (isInChefVision && (isHoldingSalt || isHoldingMouse))
+        {
+            if (angerCooldown <= 0f)
+            {
+                Debug.Log("Check");
+                interactionIcon.SetActive(true);
+                GameManager.Instance.IncreaseAnger(GameManager.Instance.angerIncreaseRate);
+                angerCooldown = angerCooldownDuration;
+
+                // ✅ Gọi chef set animation
+                if (chef != null)
+                {
+                    if (isHoldingSalt)
+                    {
+                        chef.SetAngrySalt(true);
+                        chef.SetAngryMouse(false);
+                    }
+                    else if (isHoldingMouse)
+                    {
+                        chef.SetAngryMouse(true);
+                        chef.SetAngrySalt(false);
+                    }
+                }
+            }
+        }
+        else
+        {
+            // ✅ Reset animation khi không bị phát hiện nữa
+            if (chef != null)
+            {
+                chef.SetAngryMouse(false);
+                chef.SetAngrySalt(false);
             }
         }
     }
@@ -160,7 +203,12 @@ public class InteractionDetector : MonoBehaviour
         if (collision.CompareTag("Kitchen"))
         {
             isInKitchen = true;
-            Debug.Log("Entered kitchen area");
+        }
+
+        // ✅ kiểm tra nếu vào vùng ChefVision khi đang cầm muối hoặc chuột
+        if (collision.CompareTag("ChefVision"))
+        {
+            isInChefVision = true;
         }
     }
 
@@ -176,7 +224,11 @@ public class InteractionDetector : MonoBehaviour
         if (collision.CompareTag("Kitchen"))
         {
             isInKitchen = false;
-            Debug.Log("Exited kitchen area");
+        }
+        if (collision.CompareTag("ChefVision"))
+        {
+            isInChefVision = false;
+            Debug.Log("Exited ChefVision area");
         }
     }
 }

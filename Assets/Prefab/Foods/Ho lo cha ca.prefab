@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3639769051458127410}
   m_Layer: 0
   m_Name: Ho lo cha ca
-  m_TagString: Untagged
+  m_TagString: Food
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -149,3 +149,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dish: {fileID: 11400000, guid: 724331f53d86667479d635656760ecd8, type: 2}
   food: {fileID: 2319860808719847277}
+  isSalted: 0
+  isMouseAdded: 0

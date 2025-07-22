@@ -47371,6 +47371,8 @@ MonoBehaviour:
   - {fileID: 1256151930}
   - {fileID: 1600243038}
   - {fileID: 2033802457}
+  - {fileID: 24333624}
+  - {fileID: 346810755}
   spawnInterval: 15
   chef: {fileID: 76861618}
 --- !u!1 &1882498096

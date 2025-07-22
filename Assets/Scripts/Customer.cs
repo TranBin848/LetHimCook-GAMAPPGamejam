@@ -12,7 +12,7 @@ public class Customer : MonoBehaviour, IInteractable
     public Chair chairScript;
     public MenuList menuList;
     public DishData orderedDish;
-    public int orderIndex; // Chỉ số đơn hàng trong OrderManager
+    public string orderID;
     public GameObject[] speechBubblePrefabs; // Các prefab khung chat
     public float orderTimeLimit; // Thời gian chờ gọi món
     public float prepTimeLimit; // Thời gian chờ chuẩn bị món
@@ -30,6 +30,8 @@ public class Customer : MonoBehaviour, IInteractable
 
     public GameObject interactionIcon; // Biểu tượng tương tác
     public Animator interactionAnimator; // Animator cho biểu tượng tương tác
+
+    public bool leaveAngry = false;
     void Start()
     {
         interactionIcon.SetActive(false); // Ẩn biểu tượng tương tác ban đầu
@@ -112,7 +114,7 @@ public class Customer : MonoBehaviour, IInteractable
         if (hasOrdered && orderTimer > 0)
         {
             hasOrdered = false;
-            orderIndex = OrderManager.Instance.AddOrder(orderedDish, prepTimeLimit, this);
+            orderID = OrderManager.Instance.AddOrder(orderedDish, prepTimeLimit, this);
             AudioManager.Instance.playcustomerSFX("Interact"); // Phát âm thanh khi khách gọi món
             PrepFood();
             // TODO: Thêm logic để xử lý đơn hàng (như thêm vào danh sách nhiệm vụ người chơi)
@@ -165,7 +167,6 @@ public class Customer : MonoBehaviour, IInteractable
     }
     IEnumerator LeaveAngryRestaurant(int index)
     {
-       
         if (currentSpeechBubble != null)
         {
             Destroy(currentSpeechBubble);
@@ -258,12 +259,14 @@ public class Customer : MonoBehaviour, IInteractable
                 StartCoroutine(LeaveAngryRestaurant(3));
             }
             Destroy(carriedFood.gameObject);
-            OrderManager.Instance.RemoveFinishOrder(orderIndex);
+            Debug.Log(orderID);
+            OrderManager.Instance.RemoveFinishOrder(orderID);
         }
         else
         {
             Destroy(carriedFood.gameObject);
-            OrderManager.Instance.RemoveFinishOrder(orderIndex);
+            Debug.Log(orderID);
+            OrderManager.Instance.RemoveFinishOrder(orderID);
             StartCoroutine(LeaveHappyRestaurant());
         }
     }

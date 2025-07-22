@@ -15,40 +15,48 @@ public class OrderManager : MonoBehaviour
         Instance = this;
     }
 
-    public int AddOrder(DishData dish, float orderTime, Customer customer)
-    {
-        StartCoroutine(SpawnOrderCard(dish, orderTime, customer));
-        return activeOrders.Count - 1;
-    }
-
-    private IEnumerator SpawnOrderCard(DishData dish, float orderTime, Customer customer)
+    public string AddOrder(DishData dish, float orderTime, Customer customer)
     {
         GameObject card = Instantiate(orderCardPrefab, orderPanel);
         OrderCard cardScript = card.GetComponent<OrderCard>();
+
+        // Gán orderID
+        cardScript.orderID = System.Guid.NewGuid().ToString();
+
+        // Setup order
         cardScript.Setup(dish, orderTime, customer);
         activeOrders.Add(cardScript);
+
+        // Start spawn animation
+        StartCoroutine(SpawnOrderCard(cardScript));
+
+        return cardScript.orderID;
+    }
+
+    private IEnumerator SpawnOrderCard(OrderCard cardScript)
+    {
+        RectTransform cardRect = cardScript.GetComponent<RectTransform>();
 
         yield return null; // Đợi 1 frame để Layout Group tính xong
         LayoutRebuilder.ForceRebuildLayoutImmediate(orderPanel.GetComponent<RectTransform>()); // Force rebuild
 
-        RectTransform cardRect = card.GetComponent<RectTransform>();
         Vector2 targetPos = cardRect.anchoredPosition;
-
         float outsideX = orderPanel.GetComponent<RectTransform>().rect.width + 200f;
         cardRect.anchoredPosition = new Vector2(outsideX, targetPos.y);
 
         cardRect.DOAnchorPos(targetPos, 0.5f).SetEase(Ease.OutBack);
     }
 
-    public void RemoveFinishOrder(int index)
+    public void RemoveFinishOrder(string orderID)
     {
-        if (index < 0 || index >= activeOrders.Count)
+        var card = activeOrders.Find(c => c.orderID == orderID);
+        if (card == null)
         {
-            Debug.LogWarning("OrderCard không tồn tại tại chỉ số: " + index);
+            Debug.LogWarning("OrderCard không tồn tại với ID: " + orderID);
             return;
         }
 
-        OrderCard card = activeOrders[index];
+        int index = activeOrders.IndexOf(card);
         activeOrders.RemoveAt(index);
 
         RectTransform removedRect = card.GetComponent<RectTransform>();
@@ -67,7 +75,6 @@ public class OrderManager : MonoBehaviour
                 RectTransform rt = activeOrders[i].GetComponent<RectTransform>();
                 Vector2 targetPos = rt.anchoredPosition;
                 rt.DOAnchorPosY(targetPos.y + removedRect.rect.height + 90f, 0.3f).From().SetEase(Ease.OutBack);
-                // +90f là spacing nếu bạn để spacing trong layout group
             }
         });
     }

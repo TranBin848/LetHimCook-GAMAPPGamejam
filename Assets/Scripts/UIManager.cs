@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class UIManager : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class UIManager : MonoBehaviour
     private Vector3 reputationBarInitialPos;
     private float shakeTimer;
 
+    public GameObject menuPanel; // Kéo panel menu vào Inspector
+    private RectTransform menuRect;
     void Awake()
     {
         Instance = this;
@@ -33,6 +36,9 @@ public class UIManager : MonoBehaviour
         angerSlider.maxValue = GameManager.Instance.maxAnger;
         reputationSlider.minValue = 0f;
         reputationSlider.maxValue = GameManager.Instance.maxReputation;
+
+        menuRect = menuPanel.GetComponent<RectTransform>();
+        menuPanel.SetActive(false);
     }
 
     void Update()
@@ -69,5 +75,24 @@ public class UIManager : MonoBehaviour
     public void ShakeBars()
     {
         shakeTimer = shakeDuration;
+    }
+
+    public void OpenSettingsMenu()
+    {
+        Debug.Log("Check");
+        menuPanel.SetActive(true);
+
+        // Reset vị trí menuPanel ở ngoài màn hình trước
+        menuRect.anchoredPosition = new Vector2(0, Screen.height);
+
+        // Dùng DOTween trượt xuống vị trí 0
+        menuRect.DOAnchorPos(Vector2.zero, 0.5f).SetEase(Ease.OutBack);
+    }
+
+    public void CloseSettingsMenu()
+    {
+        // Trượt lên rồi disable panel
+        menuRect.DOAnchorPos(new Vector2(0, Screen.height), 0.5f).SetEase(Ease.InBack)
+            .OnComplete(() => menuPanel.SetActive(false));
     }
 }

@@ -17,6 +17,7 @@ public class UIManager : MonoBehaviour
     private float shakeTimer;
 
     public GameObject menuPanel; // Kéo panel menu vào Inspector
+    public GameObject helpPanel;
     private RectTransform menuRect;
     void Awake()
     {
@@ -39,6 +40,7 @@ public class UIManager : MonoBehaviour
 
         menuRect = menuPanel.GetComponent<RectTransform>();
         menuPanel.SetActive(false);
+        helpPanel.SetActive(false);
     }
 
     void Update()
@@ -96,5 +98,22 @@ public class UIManager : MonoBehaviour
         menuRect.DOAnchorPos(new Vector2(0, Screen.height), 0.5f).SetEase(Ease.InBack)
             .OnComplete(() => menuPanel.SetActive(false));
         PauseController.SetPause(false); // Tiếp tục game khi đóng menu
+    }
+
+    public void OpenHelpPanel()
+    {
+        helpPanel.SetActive(true);
+        // Reset scale về nhỏ trước khi zoom
+        helpPanel.transform.localScale = Vector3.zero;
+
+        // Zoom to lên trong 0.3 giây với easing OutBack
+        helpPanel.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutBack);
+    }
+
+    public void CloseHelpPanel()
+    {
+        // Zoom nhỏ lại trong 0.2 giây với easing InBack, sau đó ẩn panel
+        helpPanel.transform.DOScale(Vector3.zero, 0.2f).SetEase(Ease.InBack)
+            .OnComplete(() => helpPanel.SetActive(false));
     }
 }

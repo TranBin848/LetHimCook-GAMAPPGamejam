@@ -41,7 +41,7 @@ public class Chef : MonoBehaviour, IInteractable
     private int dialogueIndex;
     private bool isTyping, isDialogueActive;
 
-    private bool hasInteracted = false;
+    public bool hasInteracted = false;
     private bool canInteractAgain = true; // Mặc định có thể tương tác
 
     void Start()

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CustomerSpawner : MonoBehaviour
@@ -11,10 +12,25 @@ public class CustomerSpawner : MonoBehaviour
 
     public float spawnInterval = 5f;
 
+    public Chef chef; // 🔥 Thêm tham chiếu đến Chef
+
     void Start()
     {
-        InvokeRepeating("SpawnCustomer", 40f, spawnInterval);
+        StartCoroutine(WaitForChefInteraction());
     }
+
+    IEnumerator WaitForChefInteraction()
+    {
+        // Đợi cho đến khi chef.hasInteracted == true
+        yield return new WaitUntil(() => chef.hasInteracted);
+
+        // Đợi thêm 10 giây trước khi spawn
+        yield return new WaitForSeconds(8f);
+
+        // Bắt đầu spawn lặp lại
+        InvokeRepeating("SpawnCustomer", 0f, spawnInterval);
+    }
+
 
     void SpawnCustomer()
     {
@@ -27,7 +43,6 @@ public class CustomerSpawner : MonoBehaviour
                 return;
             }
 
-            // Random prefab
             int index = Random.Range(0, customerPrefabs.Count);
             GameObject prefab = customerPrefabs[index];
 

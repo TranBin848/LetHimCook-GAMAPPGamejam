@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.AI;
-using Unity.Jobs;
+
 public class Customer : MonoBehaviour, IInteractable
 {
     public string customerID { get; private set; }
@@ -75,7 +75,7 @@ public class Customer : MonoBehaviour, IInteractable
         }
 
         // Đếm thời gian chờ nhận món
-        if (hasOrdered && orderTimer > 0)
+        if (hasOrdered && orderTimer > 0 && isSitting)
         {
             orderTimer -= Time.deltaTime;
             if (orderTimer <= 0)
@@ -90,10 +90,19 @@ public class Customer : MonoBehaviour, IInteractable
         hasOrdered = true;
         orderTimer = orderTimeLimit;
         // Hiển thị khung chat
-        dishIndex = Random.Range(0, speechBubblePrefabs.Length);
+        dishIndex = Random.Range(0, 3); // Random từ 0 đến 2
+        Debug.Log(dishIndex);
         orderedDish = menuList.dishes[dishIndex];
         currentSpeechBubble = Instantiate(speechBubblePrefabs[dishIndex], transform.position + new Vector3(0, speechBubbleOffsetY, 0), Quaternion.identity);
         currentSpeechBubble.transform.SetParent(transform); // Gắn khung chat vào khách để di chuyển cùng
+        AudioManager.Instance.playcustomerSFX("Bubble"); // Phát âm thanh khi khách gọi món
+    }
+
+    void PrepFood()
+    {
+        // Hiển thị khung chat
+        Destroy(currentSpeechBubble); // Xóa khung chat cũ
+        currentSpeechBubble = Instantiate(speechBubblePrefabs[dishIndex + 3], transform.position + new Vector3(0, speechBubbleOffsetY, 0), Quaternion.identity);
         AudioManager.Instance.playcustomerSFX("Bubble"); // Phát âm thanh khi khách gọi món
     }
 
@@ -105,6 +114,7 @@ public class Customer : MonoBehaviour, IInteractable
             hasOrdered = false;
             orderIndex = OrderManager.Instance.AddOrder(orderedDish, prepTimeLimit, this);
             AudioManager.Instance.playcustomerSFX("Interact"); // Phát âm thanh khi khách gọi món
+            PrepFood();
             // TODO: Thêm logic để xử lý đơn hàng (như thêm vào danh sách nhiệm vụ người chơi)
         }
     }
@@ -141,7 +151,7 @@ public class Customer : MonoBehaviour, IInteractable
         {
             Destroy(currentSpeechBubble);
         }
-
+        isSitting = false;
         interactionIcon.SetActive(true); // Hiển thị biểu tượng tương tác khi khách rời đi
         interactionAnimator.SetBool("isHappy", true);
         AudioManager.Instance.playcustomerSFX("Wow"); // Phát âm thanh khách vui vẻ khi rời đi
@@ -155,10 +165,12 @@ public class Customer : MonoBehaviour, IInteractable
     }
     IEnumerator LeaveAngryRestaurant(int index)
     {
+       
         if (currentSpeechBubble != null)
         {
             Destroy(currentSpeechBubble);
         }
+        isSitting = false;
         interactionIcon.SetActive(true); // Hiển thị biểu tượng tương tác khi khách rời đi
         switch (index)
         {

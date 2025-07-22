@@ -780,7 +780,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cb8456e508474f47bf141ed2d06b565, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxAnger: 5
+  maxAnger: 100
   maxReputation: 100
   angerIncreaseRate: 8
   reputationDecreaseOnTimeout: 5
@@ -47370,6 +47370,7 @@ MonoBehaviour:
   - {fileID: 1600243038}
   - {fileID: 2033802457}
   spawnInterval: 10
+  chef: {fileID: 76861618}
 --- !u!1 &1882498096
 GameObject:
   m_ObjectHideFlags: 0

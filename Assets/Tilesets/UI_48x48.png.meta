@@ -4091,7 +4091,7 @@ TextureImporter:
         width: 39
         height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4113,7 +4113,7 @@ TextureImporter:
         width: 39
         height: 48
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4122,6 +4122,72 @@ TextureImporter:
       bones: []
       spriteID: 9d571ecd0d8874341b6834ee2808b898
       internalID: -1486538142
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_48x48_162
+      rect:
+        serializedVersion: 2
+        x: 635
+        y: 379
+        width: 42
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3b770bed340199745a8b0f9b8681e7a4
+      internalID: -1578168827
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_48x48_163
+      rect:
+        serializedVersion: 2
+        x: 763
+        y: 427
+        width: 42
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 186570de6d1d98540aa49f02527a82f8
+      internalID: 263504534
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_48x48_164
+      rect:
+        serializedVersion: 2
+        x: 815
+        y: 427
+        width: 42
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 072a157fdc7b95a4e8b332d0dd52cfcb
+      internalID: 1135693110
       vertices: []
       indices: 
       edges: []
@@ -4211,6 +4277,9 @@ TextureImporter:
       UI_48x48_16: 536647170593222066
       UI_48x48_160: -737597255
       UI_48x48_161: -1486538142
+      UI_48x48_162: -1578168827
+      UI_48x48_163: 263504534
+      UI_48x48_164: 1135693110
       UI_48x48_17: -7102955636642921907
       UI_48x48_18: 5497923207781471131
       UI_48x48_19: -1281907637214771778

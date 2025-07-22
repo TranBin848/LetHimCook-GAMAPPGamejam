@@ -116,6 +116,9 @@ MonoBehaviour:
   - {fileID: 7110479362986831687, guid: f390f197716f0434f8dac16bd43603d9, type: 3}
   - {fileID: 3055687200895463445, guid: 0ca80873531d2de48a136d2e8451d5c6, type: 3}
   - {fileID: 2184028719844501302, guid: 6f7999d48fb60c940804728a36d19fb4, type: 3}
+  - {fileID: 6335266000879752585, guid: bb1494c927e4e8f49b64e4274b1bade2, type: 3}
+  - {fileID: 5592785049397760908, guid: bc3a6778c260a1447b523c8c459574a5, type: 3}
+  - {fileID: 3154119836672771588, guid: 453e3e81e24cb6844a04111ac72223fe, type: 3}
   orderTimeLimit: 35
   prepTimeLimit: 50
   speechBubbleOffsetY: 1.5

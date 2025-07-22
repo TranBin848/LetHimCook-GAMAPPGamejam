@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-
+using UnityEngine.SceneManagement;
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
@@ -115,5 +115,10 @@ public class UIManager : MonoBehaviour
         // Zoom nhỏ lại trong 0.2 giây với easing InBack, sau đó ẩn panel
         helpPanel.transform.DOScale(Vector3.zero, 0.2f).SetEase(Ease.InBack)
             .OnComplete(() => helpPanel.SetActive(false));
+    }
+
+    public void OpenHome()
+    {
+        SceneManager.LoadScene("StartScene");     
     }
 }

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f380b18b141c1654ca0f46c290997b4d
+guid: ca2bbe2e14c9d754c8c79ff1ef299838
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - VT323
+  - Anton
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

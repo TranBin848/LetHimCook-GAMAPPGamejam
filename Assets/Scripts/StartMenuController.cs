@@ -1,16 +1,28 @@
 ﻿using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 public class StartMenuController : MonoBehaviour
 {
     public GameObject helpPanel;
+    public RectTransform transitionPanel; // Kéo RectTransform của TransitionPanel vào
+
     public void Start()
     {
         helpPanel.SetActive(false); // Ẩn panel trợ giúp ban đầu
+        // Đặt transitionPanel ra ngoài màn hình ban đầu (ở trên)
+        float screenHeight = Screen.height;
+        transitionPanel.anchoredPosition = new Vector2(0, screenHeight);
     }
     public void OnStartClick()
     {
-        SceneManager.LoadScene("SampleScene");
+        // Slide panel từ trên xuống (0.5s) rồi load scene
+        transitionPanel.DOAnchorPos(Vector2.zero, 0.5f)
+            .SetEase(Ease.InQuad)
+            .OnComplete(() =>
+            {
+                SceneManager.LoadScene("SampleScene");
+            });
     }
     public void OnExitClick()
     {

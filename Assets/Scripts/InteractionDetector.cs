@@ -62,7 +62,7 @@ public class InteractionDetector : MonoBehaviour
             if (angerCooldown <= 0f)
             {
                 interactionIcon.SetActive(true);
-                GameManager.Instance.IncreaseAnger(GameManager.Instance.angerIncreaseRate);
+                
                 angerCooldown = angerCooldownDuration;
 
                 // ✅ Gọi chef set animation
@@ -70,11 +70,13 @@ public class InteractionDetector : MonoBehaviour
                 {
                     if (isHoldingSalt)
                     {
+                        GameManager.Instance.IncreaseAnger(GameManager.Instance.angerIncreaseAddSalt);
                         chef.SetAngrySalt(true);
                         chef.SetAngryMouse(false);
                     }
                     else if (isHoldingMouse)
                     {
+                        GameManager.Instance.IncreaseAnger(GameManager.Instance.angerIncreaseAddMouse);
                         chef.SetAngryMouse(true);
                         chef.SetAngrySalt(false);
                     }

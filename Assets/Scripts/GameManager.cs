@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
     public float maxAnger = 100f;
     public float maxReputation = 100f;
     public float angerIncreaseRate = 10f;
+    public float angerIncreaseAddSalt = 10f; // Tăng thêm giận dữ mỗi lần tương tác
+    public float angerIncreaseAddMouse = 15f; // Tăng thêm giận dữ mỗi lần tương tác
     public float reputationDecreaseOnTimeout = 5f;
     public float reputationDecreaseOnOrderFailure = 7f;
     public float reputationDecreaseOnSalted = 10f;

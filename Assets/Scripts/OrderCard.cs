@@ -14,6 +14,7 @@ public class OrderCard : MonoBehaviour
     public bool hasFinished = false;
     public Image backgroundImage; // background của card
     public Color finishedColor = new Color(0.8f, 1f, 0.8f, 1f); // xanh nhạt
+    private bool hasRemoved = false;
     private void Start()
     {
         slider.minValue = 0f;
@@ -53,6 +54,7 @@ public class OrderCard : MonoBehaviour
             {
                 customer.OnPrepTimeout();
                 OrderManager.Instance.RemoveOrder(this);
+                hasRemoved = true;
             }
         }
     }

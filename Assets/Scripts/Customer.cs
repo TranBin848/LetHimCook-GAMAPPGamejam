@@ -259,7 +259,6 @@ public class Customer : MonoBehaviour, IInteractable
             }
             Destroy(carriedFood.gameObject);
             OrderManager.Instance.RemoveFinishOrder(orderIndex);
-            
         }
         else
         {

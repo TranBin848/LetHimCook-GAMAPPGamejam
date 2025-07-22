@@ -783,6 +783,8 @@ MonoBehaviour:
   maxAnger: 100
   maxReputation: 100
   angerIncreaseRate: 8
+  angerIncreaseAddSalt: 10
+  angerIncreaseAddMouse: 15
   reputationDecreaseOnTimeout: 5
   reputationDecreaseOnOrderFailure: 7
   reputationDecreaseOnSalted: 10
@@ -36472,7 +36474,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.5
+  m_Volume: 0.6
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -47369,7 +47371,7 @@ MonoBehaviour:
   - {fileID: 1256151930}
   - {fileID: 1600243038}
   - {fileID: 2033802457}
-  spawnInterval: 10
+  spawnInterval: 15
   chef: {fileID: 76861618}
 --- !u!1 &1882498096
 GameObject:
@@ -47823,7 +47825,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.65
+  m_Volume: 0.8
   m_Pitch: 0.6
   Loop: 1
   Mute: 0
@@ -47952,7 +47954,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.5
+  m_Volume: 0.6
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -48679,7 +48681,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 575693729334773406, guid: 9805928aa8fe56342ac50f9f989fa3ef, type: 3}
       propertyPath: m_TagString
-      value: Player
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 743759674895860858, guid: 9805928aa8fe56342ac50f9f989fa3ef, type: 3}
       propertyPath: m_Color.a

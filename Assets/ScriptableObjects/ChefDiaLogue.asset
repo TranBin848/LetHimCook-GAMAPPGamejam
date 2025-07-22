@@ -26,7 +26,15 @@ MonoBehaviour:
     went straight to trash because of him. <b><color=red>My anger bar</color></b>
     maxed out, so I kicked him out. That\u2019s why you\u2019ve got this job now.
     Don\u2019t mess it up. "
-  autoProgressLines: 01010101
+  - "(Whispering) I\u2019m here to take revenge for my older brother whom you kicked
+    out, old man."
+  - '(Whispering) He told me that the <color=#FF0000><b>red circle</b></color> around
+    chef is <color=#FF0000><b>chef vision range</b></color>, so when placing a mouse
+    or adding salt into the food, it <color=#FF0000><b>must stay out of that area</b></color>. '
+  - "(Whispering) My mission is to bring the <color=#FFA500><b>restaurant\u2019s
+    reputation bar</b></color> down to zero without filling up the <color=#FF0000><b>chef\u2019s
+    anger bar</b></color>."
+  autoProgressLines: 01010101010101
   autoProgressDelay: 2
   typingSpeed: 0.05
   voicePitch: 1

@@ -36,11 +36,13 @@ public class Chef : MonoBehaviour, IInteractable
     public GameObject dialoguePanel; // Panel hiển thị hội thoại
     public TMP_Text diaLogueText, nameText, instructionText;
     public Image portraitImage;
+    public Sprite alternatePortrait;
 
     private int dialogueIndex;
     private bool isTyping, isDialogueActive;
 
     private bool hasInteracted = false;
+    private bool canInteractAgain = true; // Mặc định có thể tương tác
 
     void Start()
     {
@@ -308,11 +310,13 @@ public class Chef : MonoBehaviour, IInteractable
 
     public void Interact()
     {
+        if (!canInteractAgain) return; // Nếu chưa được phép thì không cho tương tác
+
         if (dialogueData == null)
         {
             return;
         }
-        if(isDialogueActive)
+        if (isDialogueActive)
         {
             AudioManager.Instance.stopchefSFX("ChefPortrait"); // 🔊 Dừng âm thanh khi kết thúc hội thoại
             AudioManager.Instance.playchefSFX("ChefPortrait"); // 🔊 Phát âm thanh khi bắt đầu hội thoại
@@ -329,7 +333,7 @@ public class Chef : MonoBehaviour, IInteractable
 
     public bool canInteract()
     {
-        return !isDialogueActive;
+        return !isDialogueActive && canInteractAgain; // Thêm điều kiện kiểm tra canInteractAgain
     }
 
     private void StartDialogue()
@@ -357,6 +361,16 @@ public class Chef : MonoBehaviour, IInteractable
         }
         else if (++dialogueIndex < dialogueData.dialogueLines.Length)
         {
+            // 🔥 Đổi portrait nếu index >= 3
+            if (dialogueIndex > 3)
+            {
+                portraitImage.sprite = alternatePortrait;
+            }
+            else
+            {
+                portraitImage.sprite = dialogueData.ncpPortrait; // Giữ sprite gốc trước index 3
+            }
+
             StartCoroutine(TypeLine());
         }
         else
@@ -409,5 +423,13 @@ public class Chef : MonoBehaviour, IInteractable
         isDialogueActive = false;
         diaLogueText.text = "";
         dialoguePanel.SetActive(false);
+
+        // 🔥 Khóa tương tác 2s sau khi kết thúc hội thoại
+        canInteractAgain = false;
+        Invoke(nameof(EnableInteract), 3f);
+    }
+    private void EnableInteract()
+    {
+        canInteractAgain = true;
     }
 }

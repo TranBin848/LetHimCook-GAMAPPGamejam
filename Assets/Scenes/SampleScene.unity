@@ -48296,6 +48296,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 331004790}
     - target: {fileID: 3600030751951025626, guid: 9805928aa8fe56342ac50f9f989fa3ef, type: 3}
+      propertyPath: alternatePortrait
+      value: 
+      objectReference: {fileID: -5201531099553009572, guid: 37d0a528d7316b34daf490af1079fb81, type: 3}
+    - target: {fileID: 3600030751951025626, guid: 9805928aa8fe56342ac50f9f989fa3ef, type: 3}
       propertyPath: dishList.Array.size
       value: 3
       objectReference: {fileID: 0}

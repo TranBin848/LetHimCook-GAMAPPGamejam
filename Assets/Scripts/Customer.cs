@@ -46,6 +46,15 @@ public class Customer : MonoBehaviour, IInteractable
 
     private void Update()
     {
+        if (PauseController.IsGamePause)
+        {
+            agent.isStopped = true;
+            animator.SetBool("isMoving", false);
+            return;
+        }
+
+        agent.isStopped = false;
+
         // Cập nhật animation khi di chuyển
         Vector3 velocity = agent.velocity;
         if (velocity.magnitude > 0.1f)

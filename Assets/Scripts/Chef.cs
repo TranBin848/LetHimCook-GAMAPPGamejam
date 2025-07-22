@@ -88,6 +88,15 @@ public class Chef : MonoBehaviour, IInteractable
 
     void Update()
     {
+        if (PauseController.IsGamePause)
+        {
+            agent.isStopped = true;
+            animator.SetBool("isMoving", false);
+            animator.SetBool("isCooking", false);
+            animator.SetBool("isResting", false);
+            return;
+        }
+
         // Nếu chưa interact thì đứng yên không làm gì
         if (!hasInteracted)
         {

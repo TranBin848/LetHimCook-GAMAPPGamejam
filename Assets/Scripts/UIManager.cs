@@ -87,6 +87,7 @@ public class UIManager : MonoBehaviour
 
         // Dùng DOTween trượt xuống vị trí 0
         menuRect.DOAnchorPos(Vector2.zero, 0.5f).SetEase(Ease.OutBack);
+        PauseController.SetPause(true); // Dừng game khi mở menu
     }
 
     public void CloseSettingsMenu()
@@ -94,5 +95,6 @@ public class UIManager : MonoBehaviour
         // Trượt lên rồi disable panel
         menuRect.DOAnchorPos(new Vector2(0, Screen.height), 0.5f).SetEase(Ease.InBack)
             .OnComplete(() => menuPanel.SetActive(false));
+        PauseController.SetPause(false); // Tiếp tục game khi đóng menu
     }
 }

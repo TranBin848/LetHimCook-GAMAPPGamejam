@@ -29,6 +29,15 @@ public class PlayerMovement : MonoBehaviour
 
     public void Move(InputAction.CallbackContext context)
     {
+        // ✅ Nếu game pause thì không nhận input
+        if (PauseController.IsGamePause)
+        {
+            movement = Vector2.zero;
+            animator.SetBool("isWalking", false);
+            AudioManager.Instance.stopplayerSFX("Footsteps");
+            return;
+        }
+
         animator.SetBool("isWalking", true);
 
         if (context.canceled)
@@ -36,10 +45,7 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("isWalking", false);
             animator.SetFloat("LastInputX", movement.x);
             animator.SetFloat("LastInputY", movement.y);
-            //if (carriedFood != null)
-            //    carriedFood.UpdatePosition(new Vector2(animator.GetFloat("LastInputX"), animator.GetFloat("LastInputY")));
 
-            // 🛑 Stop footstep sound khi dừng
             AudioManager.Instance.stopplayerSFX("Footsteps");
         }
 
@@ -47,13 +53,8 @@ public class PlayerMovement : MonoBehaviour
         animator.SetFloat("InputX", movement.x);
         animator.SetFloat("InputY", movement.y);
 
-        //if (carriedFood != null)
-        //    carriedFood.UpdatePosition(movement);
-
-        // 🔊 Play footstep sound khi di chuyển
         if (movement.magnitude > 0.1f)
         {
-            // Nếu chưa play thì play
             if (!AudioManager.Instance.playerSFXSource.isPlaying)
             {
                 AudioManager.Instance.playplayerSFX("Footsteps");
@@ -61,7 +62,6 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            // Nếu đang play thì stop
             if (AudioManager.Instance.playerSFXSource.isPlaying)
             {
                 AudioManager.Instance.stopplayerSFX("Footsteps");
@@ -71,7 +71,13 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        rb.linearVelocity = movement * moveSpeed; // Cập nhật vận tốc của Rigidbody2D 
+        if (PauseController.IsGamePause)
+        {
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
+
+        rb.linearVelocity = movement * moveSpeed;
     }
 
     public void SetCarryingFood(bool isCarrying, Food food = null)

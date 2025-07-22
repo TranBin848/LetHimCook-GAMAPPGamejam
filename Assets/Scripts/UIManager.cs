@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
+using TMPro;
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
@@ -18,6 +19,8 @@ public class UIManager : MonoBehaviour
 
     public GameObject menuPanel; // Kéo panel menu vào Inspector
     public GameObject helpPanel;
+    public GameObject gameOverPanel; // Kéo panel gameover từ Inspector vào
+    public TMP_Text gameOverText; // Text hiển thị You Win hoặc You Lose
     private RectTransform menuRect;
     void Awake()
     {
@@ -41,6 +44,7 @@ public class UIManager : MonoBehaviour
         menuRect = menuPanel.GetComponent<RectTransform>();
         menuPanel.SetActive(false);
         helpPanel.SetActive(false);
+        gameOverPanel.SetActive(false); // Ẩn panel gameover ban đầu
     }
 
     void Update()
@@ -120,5 +124,22 @@ public class UIManager : MonoBehaviour
     public void OpenHome()
     {
         SceneManager.LoadScene("StartScene");     
+    }
+
+    public void ShowGameOver(bool isWin)
+    {
+        gameOverPanel.SetActive(true);
+        PauseController.SetPause(true);
+
+        if (isWin)
+        {
+            gameOverText.text = "You Win";
+            gameOverText.color = Color.yellow; // Hoặc màu thắng
+        }
+        else
+        {
+            gameOverText.text = "You Lose";
+            gameOverText.color = Color.red; // Hoặc màu thua
+        }
     }
 }

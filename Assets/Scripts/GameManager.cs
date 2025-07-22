@@ -33,8 +33,7 @@ public class GameManager : MonoBehaviour
         if (anger >= maxAnger)
         {
             Debug.Log("Chef is furious! Game Over!");
-            // TODO: Thêm logic game over (như reload Scene hoặc hiển thị màn hình thua)
-            // SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            UIManager.Instance.ShowGameOver(false); // Lose
         }
     }
 
@@ -44,8 +43,8 @@ public class GameManager : MonoBehaviour
         Debug.Log($"Reputation: {reputation}/{maxReputation}");
         if (reputation <= 0)
         {
-            Debug.Log("Restaurant reputation is zero! Game Over!");
-            // TODO: Thêm logic game over
+            Debug.Log("Restaurant reputation is zero! You Win!");
+            UIManager.Instance.ShowGameOver(true); // Win
         }
     }
 

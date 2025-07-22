@@ -9,6 +9,7 @@ public class StartMenuController : MonoBehaviour
 
     public void Start()
     {
+        PauseController.SetPause(false);
         helpPanel.SetActive(false); // Ẩn panel trợ giúp ban đầu
         // Đặt transitionPanel ra ngoài màn hình ban đầu (ở trên)
         float screenHeight = Screen.height;

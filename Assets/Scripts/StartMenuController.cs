@@ -12,7 +12,7 @@ public class StartMenuController : MonoBehaviour
         PauseController.SetPause(false);
         helpPanel.SetActive(false); // Ẩn panel trợ giúp ban đầu
         // Đặt transitionPanel ra ngoài màn hình ban đầu (ở trên)
-        float screenHeight = Screen.height;
+        float screenHeight = 1080;
         transitionPanel.anchoredPosition = new Vector2(0, screenHeight);
     }
     public void OnStartClick()
